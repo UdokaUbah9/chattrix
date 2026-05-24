@@ -8,10 +8,33 @@
 @theme inline {
   --color-background: var(--background);
   --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
 }
 
+@theme {
+  /* --color-text-default: #0a0a0a; */
+
+  --color-deep-yellow: #ffc107;
+  --color-text-default: #181a18;
+  --color-surface-base: #ffffff;
+  --color-bright-yellow: #ffeb3b;
+  --color-emoji-orange-base: #f7a544; /* Primary orange tone (Lighter, softer orange) */
+  --color-emoji-orange-shadow: #d88931; /* Darker orange for the shadow effect (Lighter than before) */
+  --color-emoji-burnt-blush: #b86e24; /* Deepest contour color (Acts as cheek definition, slightly lighter) */
+
+  /* --- Yellow Highlight and Feature Colors --- */
+  --color-emoji-yellow-light: #fff9c4; /* Lighter, almost white (The "little yellow" highlight) */
+  --color-emoji-mouth: #5c3317; /* Dark Brown (Mouth Line) */
+
+  --color-smoke: #e7e7e7;
+
+  --color-dark-slate-grey: #4a5568;
+}
+
+.dark {
+  --color-text-default: #ffffff;
+  --color-surface-base: #181a18;
+  --color-dark-slate-grey: #d0d0d0;
+}
 @media (prefers-color-scheme: dark) {
   :root {
     --background: #0a0a0a;
@@ -22,5 +45,23 @@
 body {
   background: var(--background);
   color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+}
+
+@keyframes snap-bubble {
+  0%,
+  100% {
+    transform: translateY(0) scale(1);
+  }
+  50% {
+    transform: translateY(-4px) scale(1.05);
+  }
+}
+
+@keyframes rotate-slow {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }

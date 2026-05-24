@@ -1,14 +1,13 @@
-import { Geist, Geist_Mono } from "next/font/google";
 import "./globals.css";
+import { Toaster } from "react-hot-toast";
+import AuthProvider from "../components/AuthProvider";
+import { Montserrat } from "next/font/google";
 
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+const montserrat = Montserrat({
+  weight: ["400", "600", "700"],
   subsets: ["latin"],
-});
-
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-poppins",
+  display: "swap",
 });
 
 export const metadata = {
@@ -19,10 +18,49 @@ export const metadata = {
 export default function RootLayout({ children }) {
   return (
     <html lang="en">
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        {children}
+      <body className={`${montserrat.className} antialiased`}>
+        <AuthProvider>
+          {children}
+          <Toaster
+            position="top-center"
+            reverseOrder={false}
+            toastOptions={{
+              // Default styles for all toasts
+              style: {
+                background: "#fff", // Clean white background
+                color: "#000", // Bold black text
+                borderRadius: "9999px", // Pill shape
+                // border: "3px solid #000", // The signature Smile thick border
+                fontWeight: "700",
+                fontSize: "13px",
+                // textTransform: "uppercase",
+                letterSpacing: "0.05em",
+                padding: "12px 24px",
+              },
+              // Customizing specific types
+              success: {
+                iconTheme: {
+                  primary: "#000",
+                  secondary: "#10B981", // Yellow-400
+                },
+                style: {
+                  background: "#fbbf24", // Success is the Smile Yellow
+                },
+              },
+              error: {
+                style: {
+                  background: "#ff4b4b", // Vibrant red
+                  color: "#fff",
+                },
+                iconTheme: {
+                  primary: "#fff",
+                  secondary: "#ff4b4b",
+                },
+              },
+              duration: 3000,
+            }}
+          />
+        </AuthProvider>
       </body>
     </html>
   );
