@@ -22,7 +22,7 @@ export default function ChangePassword() {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/smile/v1/users/password-change",
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/password-change`,
         {
           method: "PATCH",
           headers: {

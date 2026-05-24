@@ -35,11 +35,7 @@ export default function LoginForm({ setIsFocused }) {
   const onShowPassword = function () {
     setShowPassword((show) => !show);
   };
-  const base_url = process.env.NEXT_PUBLIC_BASE_URL;
-  console.log({ base_url });
-  console.log("HELLO");
-  console.log("BASE_URL:", process.env.NEXT_PUBLIC_BASE_URL);
-  console.log("All env:", process.env);
+  const base_url = import.meta.VITE_BASE_URL;
   // Styles applied to all INPUTS, LABEL
   const inputStyle =
     "h-14 bg-smoke p-4 text-sm cursor-pointer rounded-lg tracking-wide w-full";
@@ -91,16 +87,19 @@ export default function LoginForm({ setIsFocused }) {
     try {
       setIsLoading(true);
       setError(false);
-      const res = await fetch(`${base_url}/api/smile/v1/users/login`, {
-        method: "POST",
-        headers: { "Content-Type": "application/json" },
-        signal: controller.signal,
-        credentials: "include",
-        body: JSON.stringify({
-          username: username.trim(),
-          password: password.trim(),
-        }),
-      });
+      const res = await fetch(
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/login`,
+        {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          signal: controller.signal,
+          credentials: "include",
+          body: JSON.stringify({
+            username: username.trim(),
+            password: password.trim(),
+          }),
+        },
+      );
 
       // DELETING THE CREATED TIMEOUT FOR THE FETCH REQUEST
       clearTimeout(timeoutId);

@@ -85,7 +85,7 @@ export default function SignUpForm({ setIsFocused }) {
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
       const res = await fetch(
-        "http://localhost:5000/api/smile/v1/users/signup/request-otp",
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/signup/request-otp`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },
@@ -130,7 +130,7 @@ export default function SignUpForm({ setIsFocused }) {
     <>
       {isLoading && <SmileLoader />}
       <form
-        className="flex flex-col items-center justify-center gap-6 w-full p-5"
+        className="flex flex-col items-center justify-center gap-6 w-full p-5 mt-12"
         onSubmit={handleSubmit}
         ref={signupFormRef}
       >

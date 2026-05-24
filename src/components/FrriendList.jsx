@@ -50,7 +50,7 @@ export default function FriendList() {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/smile/v1/users/chat-users",
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/chat-users`,
         {
           method: "GET",
           cache: "no-store",
@@ -82,7 +82,7 @@ export default function FriendList() {
   const fetchInitialData = async () => {
     try {
       // 2. Fetch All Messages automatically
-      const res = await fetch("http://localhost:5000/api/smile/v1/messages/", {
+      const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/smile/v1/messages/`, {
         method: "GET",
         cache: "no-store",
         headers: {

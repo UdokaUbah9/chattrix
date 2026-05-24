@@ -119,7 +119,7 @@ export default function ChatInput({ userId, children }) {
 
     try {
       const res = await fetch(
-        `http://localhost:5000/api/smile/v1/messages/send-message/${userId}`,
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/messages/send-message/${userId}`,
         {
           method: "POST",
           headers: {

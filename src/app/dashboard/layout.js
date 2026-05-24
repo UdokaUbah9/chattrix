@@ -73,7 +73,7 @@ export default function DashboardGuard({ children }) {
       const { email, username } = user;
       try {
         const res = await fetch(
-          "http://localhost:5000/api/smile/v1/users/getMe",
+          `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/getMe`,
           {
             method: "POST",
             headers: {

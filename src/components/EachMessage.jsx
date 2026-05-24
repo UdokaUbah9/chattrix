@@ -90,7 +90,7 @@ export default function EachMessage() {
     setError(false);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/smile/v1/messages/${userId}`,
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/messages/${userId}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -121,7 +121,7 @@ export default function EachMessage() {
     setError(false);
     try {
       const response = await fetch(
-        `http://localhost:5000/api/smile/v1/users/getUser/${id}`,
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/getUser/${id}`,
         {
           headers: {
             Authorization: `Bearer ${token}`,
@@ -144,7 +144,7 @@ export default function EachMessage() {
   const handleDeleteMessage = async function (id) {
     try {
       const res = await fetch(
-        `http://localhost:5000/api/smile/v1/messages/delete-message/${id}`,
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/messages/delete-message/${id}`,
         {
           method: "DELETE",
           headers: {

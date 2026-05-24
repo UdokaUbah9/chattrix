@@ -38,8 +38,8 @@ export default function RequestOtpAgain() {
 
       // Point to the endpoints that SEND the email, not verify it
       const endpoint = forgottenPasswordEmail
-        ? "http://localhost:5000/api/smile/v1/users/forgotten-password"
-        : "http://localhost:5000/api/smile/v1/users/signup/request-otp";
+        ? `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/forgotten-password`
+        : `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/signup/request-otp`;
 
       const res = await fetch(endpoint, {
         method: "POST",

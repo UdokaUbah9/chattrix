@@ -22,7 +22,7 @@ function EditProfileModal({ onClose, getMyProfile }) {
     setIsEditing(true);
     try {
       const res = await fetch(
-        "http://localhost:5000/api/smile/v1/users/updateMe",
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/updateMe`,
         {
           method: "PATCH", // Standard for partial updates
           headers: {

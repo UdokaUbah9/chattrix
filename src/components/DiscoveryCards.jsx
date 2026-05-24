@@ -23,7 +23,7 @@ export default function DiscoveryCard({ query }) {
     const timer = setTimeout(() => timeoutController.abort(), 4000);
 
     try {
-      const res = await fetch("http://localhost:5000/api/smile/v1/users", {
+      const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/smile/v1/users`, {
         method: "GET",
         signal: timeoutController.signal,
         headers: {

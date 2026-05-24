@@ -69,7 +69,7 @@ export default function ProfileWithLogout() {
 
     try {
       const res = await fetch(
-        "http://localhost:5000/api/smile/v1/users/getMe",
+        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/getMe`,
         {
           method: "POST",
           signal: timeoutController.signal,
@@ -108,7 +108,7 @@ export default function ProfileWithLogout() {
   const handleLogout = async () => {
     try {
       // 1. Tell backend to clear the cookie
-      await fetch("http://localhost:5000/api/smile/v1/users/logout", {
+      await fetch(`${NEXT_PUBLIC_API_URL}/api/smile/v1/users/logout`, {
         method: "GET", // or POST depending on your router
         credentials: "include", // THIS IS KEY: It sends the cookie to be cleared
       });
