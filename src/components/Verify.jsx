@@ -74,8 +74,8 @@ export default function Verify() {
 
       // 2. Select the correct endpoint based on the flow
       const endpoint = forgottenPasswordEmail
-        ? `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/verify-reset-otp`
-        : `${NEXT_PUBLIC_API_URL}http://localhost:5000/api/smile/v1/users/signup`;
+        ? `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/verify-reset-otp`
+        : `${process.env.NEXT_PUBLIC_API_URL}http://localhost:5000/api/smile/v1/users/signup`;
 
       const res = await fetch(endpoint, {
         method: "POST",

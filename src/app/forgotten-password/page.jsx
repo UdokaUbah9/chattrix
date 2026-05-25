@@ -31,7 +31,7 @@ export default function ForgottenPassword() {
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
       const res = await fetch(
-        "http://localhost:5000/api/smile/v1/users/forgotten-password",
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/forgotten-password`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -88,7 +88,7 @@ export default function LoginForm({ setIsFocused }) {
       setIsLoading(true);
       setError(false);
       const res = await fetch(
-        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/login`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/login`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -22,7 +22,7 @@ export default function ChangePassword() {
 
     try {
       const res = await fetch(
-        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/password-change`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/password-change`,
         {
           method: "PATCH",
           headers: {

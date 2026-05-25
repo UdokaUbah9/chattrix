@@ -50,7 +50,7 @@ export default function FriendList() {
 
     try {
       const res = await fetch(
-        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/chat-users`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/chat-users`,
         {
           method: "GET",
           cache: "no-store",
@@ -82,14 +82,17 @@ export default function FriendList() {
   const fetchInitialData = async () => {
     try {
       // 2. Fetch All Messages automatically
-      const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/smile/v1/messages/`, {
-        method: "GET",
-        cache: "no-store",
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/messages/`,
+        {
+          method: "GET",
+          cache: "no-store",
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       const data = await res.json();
       if (data.status === "success") {

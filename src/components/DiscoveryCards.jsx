@@ -23,14 +23,17 @@ export default function DiscoveryCard({ query }) {
     const timer = setTimeout(() => timeoutController.abort(), 4000);
 
     try {
-      const res = await fetch(`${NEXT_PUBLIC_API_URL}/api/smile/v1/users`, {
-        method: "GET",
-        signal: timeoutController.signal,
-        headers: {
-          Authorization: `Bearer ${token}`,
-          "Content-Type": "application/json",
+      const res = await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users`,
+        {
+          method: "GET",
+          signal: timeoutController.signal,
+          headers: {
+            Authorization: `Bearer ${token}`,
+            "Content-Type": "application/json",
+          },
         },
-      });
+      );
 
       clearTimeout(timer);
       const data = await res.json();

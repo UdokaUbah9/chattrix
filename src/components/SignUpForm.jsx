@@ -85,7 +85,7 @@ export default function SignUpForm({ setIsFocused }) {
       const timeoutId = setTimeout(() => controller.abort(), 10000);
 
       const res = await fetch(
-        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/signup/request-otp`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/signup/request-otp`,
         {
           method: "POST",
           headers: { "Content-Type": "application/json" },

@@ -33,7 +33,7 @@ export default function ResetPasswordForm() {
       setIsLoading(true);
 
       const res = await fetch(
-        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/resetpassword/${token}`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/resetpassword/${token}`,
         {
           method: "PATCH",
           headers: { "Content-Type": "application/json" },

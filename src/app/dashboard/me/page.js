@@ -69,7 +69,7 @@ export default function ProfileWithLogout() {
 
     try {
       const res = await fetch(
-        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/getMe`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/getMe`,
         {
           method: "POST",
           signal: timeoutController.signal,
@@ -108,10 +108,13 @@ export default function ProfileWithLogout() {
   const handleLogout = async () => {
     try {
       // 1. Tell backend to clear the cookie
-      await fetch(`${NEXT_PUBLIC_API_URL}/api/smile/v1/users/logout`, {
-        method: "GET", // or POST depending on your router
-        credentials: "include", // THIS IS KEY: It sends the cookie to be cleared
-      });
+      await fetch(
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/logout`,
+        {
+          method: "GET", // or POST depending on your router
+          credentials: "include", // THIS IS KEY: It sends the cookie to be cleared
+        },
+      );
 
       // 2. Clear Redux
       dispatch(clearUser());
