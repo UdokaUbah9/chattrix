@@ -38,9 +38,9 @@ export default function LoginForm({ setIsFocused }) {
   const base_url = import.meta.VITE_BASE_URL;
   // Styles applied to all INPUTS, LABEL
   const inputStyle =
-    "h-14 bg-smoke p-4 text-sm cursor-pointer rounded-lg tracking-wide w-full";
+    "h-14 bg-smoke px-2 py-1 text-sm cursor-pointer rounded-lg tracking-wide w-full";
   const parentStyle = "flex flex-col w-full max-w-[370px]";
-  const labelStyle = "font-semibold mb-2 text-text-default";
+  const labelStyle = "font-semibold mb-2 text-zinc-800";
   // HANDLE PASSWORD CHANGE
   const handlePasswordChange = (e) => {
     const val = e.target.value;
