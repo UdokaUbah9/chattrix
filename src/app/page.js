@@ -103,11 +103,6 @@ export default function Home() {
 
   return (
     <>
-      {isLoading && <SmileLoader />}
-
-      {/* 1. Swapped min-h-screen for min-h-dvh so mobile browsers don't clip the bottom layout.
-        2. Added safe vertical padding (pb-8 md:pb-12) to lock in perfect bottom breathing room.
-      */}
       <div
         className="min-h-dvh bg-yellow-300 overflow-y-auto overflow-x-hidden select-none flex flex-col items-center justify-between pb-8 md:pb-12 relative w-full"
         ref={containerRef}
