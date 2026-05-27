@@ -259,8 +259,7 @@ export default function ChatInput({ userId, children }) {
                 value={text}
                 onChange={handleInputChange}
                 onFocus={() => setShowPicker(false)}
-                placeholder="message..."
-                className="w-full bg-transparent text-black p-2 text-base outline-none leading-normal resize-none overflow-y-auto placeholder:text-xs"
+                className="w-full bg-transparent text-black p-2 text-base outline-none leading-normal resize-none overflow-y-auto"
               />
 
               {/* EMOJI BUTTON: Still on the right */}
