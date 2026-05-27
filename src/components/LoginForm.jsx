@@ -35,12 +35,14 @@ export default function LoginForm({ setIsFocused }) {
   const onShowPassword = function () {
     setShowPassword((show) => !show);
   };
-  const base_url = import.meta.VITE_BASE_URL;
+
   // Styles applied to all INPUTS, LABEL
+
   const inputStyle =
-    "h-14 bg-smoke px-2 py-1 text-sm cursor-pointer rounded-lg tracking-wide w-full";
+    "h-12 md:h-14 bg-smoke px-3 py-1 text-sm cursor-pointer rounded-lg tracking-wide w-full transition-all";
   const parentStyle = "flex flex-col w-full max-w-[370px]";
-  const labelStyle = "font-semibold mb-2 text-zinc-800";
+  const labelStyle = "font-semibold mb-2 text-zinc-800 text-sm md:text-base";
+
   // HANDLE PASSWORD CHANGE
   const handlePasswordChange = (e) => {
     const val = e.target.value;
@@ -153,7 +155,7 @@ export default function LoginForm({ setIsFocused }) {
     <>
       {isLoading && <SmileLoader />}
       <form
-        className="flex flex-col items-center justify-center gap-6 w-full p-5 mt-12"
+        className="flex flex-col items-center justify-center gap-4 md:gap-6 w-full px-5 py-6 md:py-12 max-w-[370px] mx-auto"
         onSubmit={handleLogin}
         ref={loginFormRef}
       >
