@@ -27,7 +27,7 @@ export default function ChatLayout({ children }) {
       {/* MAIN CONTENT: The Chat Window */}
       <main
         className={`
-          relative flex-1 h-full min-h-0 overflow-hidden
+        relative flex-1 h-full max-h-full min-h-0 overflow-hidden md:w-0 min-w-0
           ${userId ? "block" : "hidden"} 
           md:block
         `}

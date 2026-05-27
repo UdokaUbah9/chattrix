@@ -332,8 +332,8 @@ export default function EachMessage() {
   };
 
   return (
-    <div className="relative w-full h-full">
-      <div className="relative h-full w-full overflow-hidden bg-yellow-400 z-50">
+    <div className="relative w-full h-full max-h-full flex flex-col overflow-hidden">
+      <div className="relative h-full max-h-full w-full overflow-hidden bg-yellow-400 z-50 flex flex-col">
         <Image
           src="/chat-background3.jpg"
           alt="Chat background"
