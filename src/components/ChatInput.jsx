@@ -212,9 +212,7 @@ export default function ChatInput({ userId, children }) {
   };
 
   return (
-    /* 1. REMOVED 'fixed bottom-0 left-0' completely!
-       Changed to a standard full-width layout box that sits natively within your flex footer container */
-    <div className="w-full bg-yellow-300 border-t border-black/5">
+    <div className="fixed bottom-0 left-0 w-full bg-yellow-300 border-t border-white/5">
       <div className="max-w-3xl mx-auto flex flex-col">
         {/* The Input Bar */}
         <div className="flex items-end gap-2 p-2">
@@ -223,7 +221,7 @@ export default function ChatInput({ userId, children }) {
             accept="image/*"
             className="hidden"
             ref={imageRef}
-            onChange={handleImageChange}
+            onChange={handleImageChange} // We'll build this next
           />
           <button
             onClick={() => imageRef.current.click()}
@@ -233,14 +231,14 @@ export default function ChatInput({ userId, children }) {
           </button>
 
           <div className="flex-1 bg-yellow-50 rounded-2xl flex flex-col px-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-            {/* PREVIEW */}
+            {/* PREVIEW: Moved to the left using self-start */}
             {preview && (
               <div className="relative p-2 self-start mt-1">
                 <div className="relative h-20 w-20">
                   <Image
                     src={preview}
                     alt="Preview"
-                    fill
+                    fill // This makes it fill the parent container
                     className="object-cover rounded-lg border border-black"
                     unoptimized
                   />
@@ -265,7 +263,7 @@ export default function ChatInput({ userId, children }) {
                 className="w-full bg-transparent text-black p-2 text-base outline-none leading-normal resize-none overflow-y-auto"
               />
 
-              {/* EMOJI BUTTON */}
+              {/* EMOJI BUTTON: Still on the right */}
               <button
                 onClick={toggleEmojiPicker}
                 className="p-3 text-zinc-700 hover:text-purple-600 cursor-pointer z-50 transition-colors"
@@ -291,7 +289,7 @@ export default function ChatInput({ userId, children }) {
           </button>
         </div>
 
-        {/* 3. The Picker area */}
+        {/* 3. The Picker area*/}
         {showPicker && (
           <div className="w-full h-[300px] animate-in slide-in-from-bottom duration-200">
             <EmojiPicker
