@@ -39,9 +39,9 @@ export default function LoginForm({ setIsFocused }) {
   // Styles applied to all INPUTS, LABEL
 
   const inputStyle =
-    "h-12 md:h-14 bg-smoke px-3 py-1 text-sm cursor-pointer rounded-lg tracking-wide w-full transition-all";
+    "h-12 md:h-14 bg-smoke px-3 py-1 text-base cursor-pointer rounded-lg tracking-wide w-full transition-all";
   const parentStyle = "flex flex-col w-full max-w-[370px]";
-  const labelStyle = "font-semibold mb-2 text-zinc-800 text-sm md:text-base";
+  const labelStyle = "font-semibold mb-2 text-zinc-800 text-sm md:text-xs";
 
   // HANDLE PASSWORD CHANGE
   const handlePasswordChange = (e) => {

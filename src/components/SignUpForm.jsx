@@ -29,9 +29,9 @@ export default function SignUpForm({ setIsFocused }) {
   const router = useRouter();
 
   const inputStyle =
-    "h-14 bg-smoke p-4 text-sm cursor-pointer rounded-lg tracking-wide w-full";
+    "h-12 md:h-14 bg-smoke px-3 py-1 text-base cursor-pointer rounded-lg tracking-wide w-full transition-all";
   const parentStyle = "flex flex-col w-full max-w-[370px]";
-  const labelStyle = "font-semibold mb-2 text-text-default";
+  const labelStyle = "font-semibold mb-2 text-zinc-800 text-sm md:text-xs";
 
   // Show Password
   const onShowPassword = function () {
@@ -130,7 +130,7 @@ export default function SignUpForm({ setIsFocused }) {
     <>
       {isLoading && <SmileLoader />}
       <form
-        className="flex flex-col items-center justify-center gap-6 w-full p-5 mt-12"
+        className="flex flex-col items-center justify-center gap-4 md:gap-6 w-full px-5 py-6 md:py-12 max-w-[370px] mx-auto"
         onSubmit={handleSubmit}
         ref={signupFormRef}
       >
