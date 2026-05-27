@@ -29,7 +29,7 @@ export default function SignUpForm({ setIsFocused }) {
   const router = useRouter();
 
   const inputStyle =
-    "h-12 md:h-14 bg-smoke px-3 py-1 text-base cursor-pointer rounded-lg tracking-wide w-full transition-all";
+    "h-12 md:h-14 bg-smoke px-3 py-1 text-base cursor-pointer rounded-lg tracking-wide w-full transition-all text-zinc-800";
   const parentStyle = "flex flex-col w-full max-w-[370px]";
   const labelStyle = "font-semibold mb-2 text-zinc-800 text-sm md:text-xs";
 

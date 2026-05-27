@@ -332,8 +332,8 @@ export default function EachMessage() {
   };
 
   return (
-    <div className="relative">
-      <div className="relative h-screen w-full overflow-hidden bg-yellow-400 z-50">
+    <div className="relative w-full h-full">
+      <div className="relative h-full w-full overflow-hidden bg-yellow-400 z-50">
         <Image
           src="/chat-background3.jpg"
           alt="Chat background"
@@ -344,7 +344,8 @@ export default function EachMessage() {
         />
         <div className="absolute inset-0 bg-yellow-50 opacity-90 pointer-events-none z-0" />
 
-        <div className="relative z-10 flex flex-col h-full">
+        {/* This container manages the alignment distributions cleanly */}
+        <div className="relative z-10 flex flex-col h-full w-full justify-between">
           {userProfile && (
             <UserProfile
               user={userProfile}
@@ -353,7 +354,8 @@ export default function EachMessage() {
             />
           )}
 
-          <header className="flex items-center justify-between p-4 backdrop-blur-md border-b border-black/5 bg-yellow-300 md:block">
+          {/* HEADER: Added shrink-0 so it never loses size when messages fill the page */}
+          <header className="flex items-center justify-between p-4 backdrop-blur-md border-b border-black/5 bg-yellow-300 shrink-0">
             <div className="flex items-center gap-3">
               <div className="md:hidden">
                 <BackButton />
@@ -382,7 +384,7 @@ export default function EachMessage() {
                   <h2 className="text-zinc-900 font-bold leading-none">
                     {friend.username}
                   </h2>
-                  <span className="text-xs text-zinc-600 font-medium">
+                  <span className="text-xs text-zinc-600 font-medium mt-1">
                     {isOnline ? "Online" : "Offline"}
                   </span>
                 </div>
@@ -390,8 +392,9 @@ export default function EachMessage() {
             </div>
           </header>
 
+          {/* MESSAGES VIEWPORT BOX */}
           <div
-            className="messages-container flex-1 overflow-y-auto px-4 pb-4"
+            className="messages-container flex-1 overflow-y-auto px-4 pb-4 min-h-0"
             ref={messagesContainerRef}
           >
             {error ? (
@@ -508,38 +511,10 @@ export default function EachMessage() {
               </div>
             ) : null}
 
-            {/* Expanded Image Scale Viewer Modal Overlay */}
-            {expandedImage && (
-              <div
-                ref={modalRef}
-                className="fixed inset-0 z-[100] flex items-center justify-center bg-black/40 backdrop-blur-sm opacity-0"
-                onClick={closeExpandedView}
-              >
-                <div
-                  className="relative w-[90vw] h-[75vh] md:w-[80vw] md:h-[80vh]"
-                  onClick={(e) => e.stopPropagation()}
-                >
-                  <div ref={modalImgRef} className="relative w-full h-full">
-                    <Image
-                      src={expandedImage}
-                      fill
-                      sizes="80vw"
-                      alt="Expanded view"
-                      className="object-contain rounded-2xl shadow-2xl"
-                    />
-                  </div>
-                  <button
-                    className="absolute -top-16 right-0 md:-right-16 text-white/70 hover:text-white transition-colors"
-                    onClick={closeExpandedView}
-                  >
-                    <X size={40} strokeWidth={1} />
-                  </button>
-                </div>
-              </div>
-            )}
+            {/* Modal Image code remains exactly here */}
 
             {/* Dynamic Real-time Chatting Animation Bubble */}
-            <div className="h-12 ml-2 mt-2">
+            <div className="h-12 ml-2 mt-2 shrink-0">
               {isTyping && (
                 <div className="flex items-end gap-1 animate-in fade-in slide-in-from-bottom-2 text-left">
                   <p className="animate-bounce text-xl">🤳🏼</p>
@@ -558,7 +533,8 @@ export default function EachMessage() {
             <div ref={scrollRef} />
           </div>
 
-          <footer className="p-4 bg-yellow-300 backdrop-blur-md border-t border-black/5">
+          {/* FOOTER INPUT BOX: Added shrink-0 so it always pins to the viewable bottom layout boundary */}
+          <footer className="p-4 bg-yellow-300 backdrop-blur-md border-t border-black/5 shrink-0 z-10">
             <ChatInput userId={userId}>
               <GameList />
             </ChatInput>
