@@ -1,7 +1,7 @@
 "use client";
 import React, { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { Lock, Eye, EyeOff, ArrowLeft, Zap } from "lucide-react";
+import { Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
 import { useGSAP } from "@gsap/react";
 import gsap from "gsap";
 import { useSelector } from "react-redux";
@@ -90,27 +90,30 @@ export default function ChangePassword() {
   return (
     <div
       ref={containerRef}
-      className="min-h-screen p-3 pb-32 flex flex-col items-center justify-start overflow-y-auto"
+      className="min-h-screen p-4 pb-32 flex flex-col items-center justify-start overflow-y-auto bg-yellow-50/40 select-none"
     >
-      <div className="password-card w-full max-w-md backdrop-blur-3xl rounded-4xl p-4 z-10  relative">
+      {/* Back button container position handling */}
+      <div className="w-full max-w-md flex justify-start pt-4 mb-4">
         <button
           onClick={() => router.replace("/dashboard/me")}
-          className="fixed -top-10 left-0 p-3 rounded-full hover:bg-yellow-100 transition-all active:scale-90 text-zinc-600 hover:text-black"
+          className="p-3 rounded-full hover:bg-yellow-100 transition-all active:scale-90 text-zinc-600 hover:text-black z-50"
         >
           <ArrowLeft size={32} />
         </button>
+      </div>
 
-        <header className="animate-item mb-10 text-center">
-          <h1 className="text-5xl font-black text-zinc-800 uppercase italic tracking-tighter leading-none">
+      <div className="password-card w-full max-w-md rounded-3xl p-2 z-10 relative">
+        <header className="animate-item mb-8 text-center">
+          <h1 className="text-4xl sm:text-5xl font-black text-zinc-900 uppercase italic tracking-tighter leading-none">
             New{" "}
-            <span className="text-zinc-800 block drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]">
+            <span className="text-zinc-900 block drop-shadow-[0_0_15px_rgba(250,204,21,0.3)]">
               Password?
             </span>
           </h1>
         </header>
 
         <form
-          className="space-y-6 text-zinc-800"
+          className="flex flex-col gap-5 text-zinc-800"
           onSubmit={updatePasswordHandler}
         >
           <div className="animate-item">
@@ -122,19 +125,18 @@ export default function ChangePassword() {
             />
           </div>
 
-          <div className="animate-item flex items-center gap-4">
-            <div className="h-0.5 bg-white/10 flex-1" />
-            <span className="text-xs font-black text-zinc-800">
-              THE UPGRADE
+          <div className="animate-item flex items-center gap-4 py-2">
+            <div className="h-0.5 bg-zinc-200 flex-1" />
+            <span className="text-xs font-black text-zinc-400 tracking-widest uppercase">
+              The Upgrade
             </span>
-            <div className="h-0.5 bg-white/10 flex-1" />
+            <div className="h-0.5 bg-zinc-200 flex-1" />
           </div>
 
           <div className="animate-item">
             <PasswordField
               label="New Password"
               placeholder="Make it beefy"
-              className="text-zinc-800"
               value={newPassword}
               setValue={setNewPassword}
             />
@@ -149,10 +151,11 @@ export default function ChangePassword() {
             />
           </div>
 
+          {/* Submitting button matches the rest of the application styling system */}
           <button
             type="submit"
             disabled={isUpdating}
-            className="w-full p-6 font-semibold bg-purple-100 text-purple-600 uppercase tracking-wider rounded-2xl transition-all active:scale-90 mt-4 text-sm hover:rotate-1"
+            className="w-full h-16 bg-yellow-400 text-black font-black rounded-2xl border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all uppercase tracking-wide text-md mt-6 flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
           >
             {isUpdating ? "Locking..." : "Lock it in!"}
           </button>
@@ -166,26 +169,29 @@ function PasswordField({ label, placeholder, value, setValue }) {
   const [visible, setVisible] = useState(false);
 
   return (
-    <div className="flex flex-col gap-3">
-      <label className="text-xs font-black text-zinc-800 uppercase tracking-wider ml-2">
+    <div className="flex flex-col gap-2">
+      <label className="text-xs font-black text-zinc-500 uppercase tracking-wider ml-1">
         {label}
       </label>
-      <div className="relative group">
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20  transition-colors">
-          <Lock size={20} strokeWidth={3} className="text-zinc-800" />
+      <div className="relative w-full">
+        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
+          <Lock size={20} strokeWidth={2.5} />
         </div>
+
         <input
           required
           type={visible ? "text" : "password"}
           placeholder={placeholder}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          className="w-full bg-white/5 border-2 border-yellow-100 rounded-[25px] py-5 pl-14 pr-14 text-zinc-800 placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400 focus:bg-white/10 transition-all font-black text-lg"
+          className="w-full h-16 pl-14 pr-14 rounded-2xl bg-zinc-100 text-black font-semibold border-2 border-transparent focus:border-black focus:bg-white focus:outline-none transition-all text-lg placeholder:text-zinc-400 placeholder:font-normal"
         />
+
         <button
           type="button"
           onClick={() => setVisible(!visible)}
-          className="absolute right-5 top-1/2 -translate-y-1/2 text-zinc-800 hover:text-white transition-colors"
+          className="absolute right-5 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-black transition-colors"
+          tabIndex={-1}
         >
           {visible ? <EyeOff size={20} /> : <Eye size={20} />}
         </button>
