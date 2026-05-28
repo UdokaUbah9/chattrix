@@ -204,7 +204,7 @@ export default function GameArena() {
         <div className="h-[200px] w-full z-50 text-center">
           <div className="flex flex-col gap-12 items-center">
             <p
-              className={`text-center tracking-widest font-bold  mt-14 uppercase ${gameTimer === 0 ? "italic text-lg" : `text-5xl ${russoOne.className}`} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-purple-500"}`}
+              className={`text-center tracking-widest font-bold  mt-14 uppercase ${gameTimer === 0 ? "italic text-lg" : `text-3xl ${russoOne.className}`} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-purple-500"}`}
               ref={gameStatusTextRef}
             >
               {!showVictory
@@ -216,7 +216,7 @@ export default function GameArena() {
             <div
               className={`${techMono.className} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-green-700"} font-bold text-4xl flex items-center gap-2`}
             >
-              <div className="relative w-12 h-12">
+              <div className="relative size-9">
                 {/* Red border helps you see the box */}
                 <Image
                   src="/watch.png"
