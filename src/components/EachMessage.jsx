@@ -308,14 +308,12 @@ export default function EachMessage() {
     if (holdTimeoutRef.current) clearTimeout(holdTimeoutRef.current);
   };
 
-  // 🛡️ Safe Early Return placement (Below all hook registrations)
   if (!isValidMongoId) {
     return <NotFound />;
   }
 
   const isOnline = onlineUserList.includes(activeChat?.receiverId);
 
-  // Helper calculation for Date Headers
   const getDateHeading = (dateStr) => {
     const today = new Date().toDateString();
     const yesterday = new Date(Date.now() - 86400000).toDateString();
@@ -344,8 +342,8 @@ export default function EachMessage() {
         />
         <div className="absolute inset-0 bg-yellow-50 opacity-90 pointer-events-none z-0" />
 
-        {/* This container manages the alignment distributions cleanly */}
-        <div className="relative z-10 flex flex-col h-full w-full justify-between">
+        {/* FIX 1: Replaced justify-between with min-h-0 so height properties propagate down to the viewport accurately */}
+        <div className="relative z-10 flex flex-col h-full w-full min-h-0">
           {userProfile && (
             <UserProfile
               user={userProfile}
@@ -354,7 +352,6 @@ export default function EachMessage() {
             />
           )}
 
-          {/* HEADER: Added shrink-0 so it never loses size when messages fill the page */}
           <header className="flex items-center justify-between p-4 backdrop-blur-md border-b border-black/5 bg-yellow-300 shrink-0">
             <div className="flex items-center gap-3">
               <div className="md:hidden">
@@ -392,9 +389,8 @@ export default function EachMessage() {
             </div>
           </header>
 
-          {/* MESSAGES VIEWPORT BOX */}
           <div
-            className="messages-container flex-1 overflow-y-auto px-4 pb-4"
+            className="messages-container flex-1 overflow-y-auto px-4 pb-4 min-h-0"
             ref={messagesContainerRef}
           >
             {error ? (
@@ -511,9 +507,6 @@ export default function EachMessage() {
               </div>
             ) : null}
 
-            {/* Modal Image code remains exactly here */}
-
-            {/* Dynamic Real-time Chatting Animation Bubble */}
             <div className="h-12 ml-2 mt-2 shrink-0">
               {isTyping && (
                 <div className="flex items-end gap-1 animate-in fade-in slide-in-from-bottom-2 text-left">
@@ -533,8 +526,8 @@ export default function EachMessage() {
             <div ref={scrollRef} />
           </div>
 
-          {/* FOOTER INPUT BOX: Added shrink-0 so it always pins to the viewable bottom layout boundary */}
-          <footer className="p-4 bg-yellow-300 backdrop-blur-md border-t border-black/5 shrink-0 z-10">
+          {/* FIX 2: Swapped out padding adjustments for explicit positioning blocks with mt-auto */}
+          <footer className="p-4 bg-yellow-300 backdrop-blur-md border-t border-black/5 shrink-0 z-10 mt-auto">
             <ChatInput userId={userId}>
               <GameList />
             </ChatInput>
