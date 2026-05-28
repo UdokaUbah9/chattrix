@@ -191,8 +191,8 @@ export default function GameArena() {
         <Image
           src="/lamp2.jpg"
           alt="lamp Background"
-          width={400}
-          height={400}
+          width={200}
+          height={200}
           priority
           // 'absolute' pulls it out of the flow so it doesn't push content
           // 'inset-0' and 'w-full h-full' make it cover the parent

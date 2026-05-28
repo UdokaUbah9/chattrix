@@ -21,7 +21,7 @@ function Versus({ showSteal, isMyTurn }) {
   return (
     <>
       <div className="flex flex-col justify-center gap-1 text-center items-center ">
-        <p className="text-black text-lg text-center font-semibold uppercase">
+        <p className="text-black text-sm text-center font-semibold uppercase">
           {p1Label?.split(" ")[0]}
         </p>
         <div className="relative size-9 shrink-0 ring-2 ring-yellow-400/50 rounded-full">
@@ -32,7 +32,7 @@ function Versus({ showSteal, isMyTurn }) {
             className="rounded-full object-cover"
           />
           {/* Optional: Online Status Indicator */}
-          <span className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white rounded-full"></span>
+          <span className="absolute bottom-0 right-0 size-1 bg-green-500 border-2 border-white rounded-full"></span>
         </div>
         <div className="relative">
           <FloatingText
@@ -42,7 +42,7 @@ function Versus({ showSteal, isMyTurn }) {
             isMyTurn={isMyTurn}
           />
           <p
-            className={`${techMono.className} text-black font-bold text-3xl text-center`}
+            className={`${techMono.className} text-zinc-800 font-bold text-3xl text-center`}
           >
             {scores?.player1 || 0}
           </p>
@@ -50,7 +50,7 @@ function Versus({ showSteal, isMyTurn }) {
       </div>
 
       <p
-        className={`${techMono.className} text-yellow-400 text-3xl font-bold
+        className={`${techMono.className} text-yellow-400 text-4xl font-bold
   -rotate-12 select-none
   drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] 
   filter brightness-110 saturate-150`}
@@ -59,7 +59,7 @@ function Versus({ showSteal, isMyTurn }) {
       </p>
 
       <div className="flex flex-col justify-center gap-1 text-center items-center">
-        <p className="text-black font-semibold text-lg text-center uppercase">
+        <p className="text-black font-semibold text-sm text-center uppercase">
           {p2Label?.split(" ")[0]}
         </p>
         <div className="relative size-9 shrink-0 ring-2 ring-yellow-400/50 rounded-full">
@@ -70,7 +70,7 @@ function Versus({ showSteal, isMyTurn }) {
             className="rounded-full object-cover"
           />
           {/* Optional: Online Status Indicator */}
-          <span className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white rounded-full"></span>
+          <span className="absolute bottom-0 right-0 size-1 bg-green-500 border-2 border-white rounded-full"></span>
         </div>
         <div className="relative">
           <FloatingText
@@ -80,7 +80,7 @@ function Versus({ showSteal, isMyTurn }) {
             isMyTurn={isMyTurn}
           />
           <p
-            className={`${techMono.className} text-black font-bold text-5xl text-center`}
+            className={`${techMono.className} text-black font-bold text-3xl text-center`}
           >
             {scores?.player2 || 0}
           </p>
