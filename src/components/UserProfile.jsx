@@ -36,13 +36,13 @@ export default function UserProfile({ user, onClose, profilePicture }) {
     <div
       ref={containerRef}
       // CRITICAL FIX: Changed to 'fixed', added 'overflow-y-auto' and vertical padding 'py-10'
-      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-4 py-10 overflow-y-auto opacity-0"
+      className="absolute inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-4 py-10 overflow-y-auto opacity-0"
       onClick={handleClose}
     >
       <div
         ref={contentRef}
         // CRITICAL FIX: Removed rigid margins internally, allowed margins globally for safety
-        className="w-full max-w-sm bg-white rounded-[2.5rem] p-6 sm:p-8 shadow-2xl relative my-auto"
+        className="w-full max-w-sm bg-white rounded-4xl p-6 sm:p-8 shadow-2xl relative my-auto"
         onClick={(e) => e.stopPropagation()}
       >
         <div className="flex flex-col items-center">

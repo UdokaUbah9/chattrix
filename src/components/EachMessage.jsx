@@ -544,7 +544,7 @@ export default function EachMessage() {
       {expandedImage && (
         <div
           ref={modalRef}
-          className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-400 opacity-0 backdrop-blur-sm"
+          className="absolute inset-0 z-50 flex items-center justify-center opacity-0 backdrop-blur-sm"
           onClick={closeExpandedView}
         >
           <button
