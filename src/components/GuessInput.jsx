@@ -59,7 +59,7 @@ export default function GuessInput() {
   }, [guessedList?.length]);
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md mx-auto p-4 backdrop-blur-sm rounded-t-3xl flex flex-col h-[50vh] z-50">
+    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md mx-auto p-4 backdrop-blur-sm rounded-t-3xl flex flex-col h-[45vh] z-50">
       {/* 1. SCROLLABLE MESSAGE AREA */}
       {/* flex-1 makes this take all available space NOT used by the form */}
       <div className="flex-1 overflow-y-auto p-2 mb-6 flex flex-col gap-2 [scrollbar-width:none] border-t-2 border-black pb-2 rounded-2xl">
