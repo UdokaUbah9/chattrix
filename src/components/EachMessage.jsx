@@ -375,7 +375,7 @@ export default function EachMessage() {
                     priority
                   />
                   {isOnline ? (
-                    <span className="absolute bottom-0 right-0 size-3 bg-green-700 rounded-full border-2 border-white animate-pulse shadow-[0_0_8px_#22c55e]" />
+                    <span className="absolute bottom-0 right-0 size-3 bg-green-700 rounded-full border-2 border-white animate-pulse" />
                   ) : (
                     <span className="absolute bottom-0 right-0 size-3 rounded-full border-2 border-white bg-zinc-300" />
                   )}
@@ -426,7 +426,7 @@ export default function EachMessage() {
                           onMouseLeave={handleHoldEnd}
                           onTouchStart={() => handleHoldStart(msg._id)}
                           onTouchEnd={handleHoldEnd}
-                          className={`message-bubble relative p-3.5 max-w-[80%] text-[16px] shadow-sm mb-1 font-medium transition-colors break-words
+                          className={`message-bubble relative p-3.5 max-w-[80%] text-[16px] shadow-sm mb-1 font-medium transition-colors wrap-break-word
                             ${
                               msg.senderId !== userId
                                 ? "bg-purple-200 text-slate-900 ml-auto rounded-2xl rounded-br-none"
@@ -544,7 +544,7 @@ export default function EachMessage() {
       {expandedImage && (
         <div
           ref={modalRef}
-          className="absolute inset-0 z-[100] flex items-center justify-center bg-black/90 opacity-0 backdrop-blur-sm"
+          className="absolute inset-0 z-50 flex items-center justify-center bg-zinc-400 opacity-0 backdrop-blur-sm"
           onClick={closeExpandedView}
         >
           <button
