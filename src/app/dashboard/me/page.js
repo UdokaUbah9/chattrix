@@ -260,17 +260,14 @@ export default function ProfileWithLogout() {
             {/* 3. Stats Section */}
             <div className="grid grid-cols-2 gap-4 mb-10">
               <div className="bg-white/5 rounded-3xl p-5 border border-white/5 flex flex-col items-center">
-                <Trophy className="text-smile-primary mb-1" size={18} />
+                <Trophy className="mb-1 text-zinc-800" size={18} />
                 <span className="text-xl text-green-600">{getMe.wins}</span>
                 <span className="text-sm uppercase tracking-widest text-zinc-500 font-bold">
                   Wins
                 </span>
               </div>
               <div className="bg-white/5 rounded-3xl p-5 border border-white/5 flex flex-col items-center">
-                <HeartOff
-                  className="text-red-400 mb-1 group-hover:scale-110 transition-transform"
-                  size={18}
-                />
+                <HeartOff className="text-red-400 mb-1" size={18} />
                 <span className="text-xl text-green-600">{getMe.losses}</span>
                 <span className="text-sm uppercase tracking-widest text-zinc-500 font-bold">
                   Losses
