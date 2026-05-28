@@ -72,7 +72,7 @@ export default function GuessInput() {
                 ${data.playerRole === playerRole ? "text-right" : "text-left"} mb-5
               `}
             >
-              <p className="font-bold text-sm mb-1 uppercase">
+              <p className="font-bold md:text-xs text-md mb-1 uppercase">
                 {data.player.id === user._id
                   ? "YOU"
                   : data.player.username.split(" ")[0]}
@@ -80,7 +80,7 @@ export default function GuessInput() {
               <div
                 className={`flex items-end gap-2 ${data.playerRole === playerRole ? "flex-row-reverse" : "flex-row"}`}
               >
-                <div className="relative size-10 shrink-0 ring-2 ring-yellow-400 rounded-full overflow-hidden">
+                <div className="relative size-7 shrink-0 ring-2 ring-yellow-400 rounded-full overflow-hidden">
                   <Image
                     src={data.player.avatar}
                     fill
@@ -89,7 +89,7 @@ export default function GuessInput() {
                   />
                 </div>
                 <p
-                  className={`p-3 max-w-[70%] text-lg shadow-sm rounded-2xl tracking-wide ${
+                  className={`p-3 max-w-[70%] text-base shadow-sm rounded-2xl tracking-wide ${
                     data.playerRole === playerRole
                       ? "bg-purple-200 text-slate-900 rounded-br-none"
                       : "bg-white text-slate-900 rounded-bl-none"
