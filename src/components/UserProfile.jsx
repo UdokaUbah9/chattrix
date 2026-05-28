@@ -36,7 +36,7 @@ export default function UserProfile({ user, onClose, profilePicture }) {
     <div
       ref={containerRef}
       // CRITICAL FIX: Changed to 'fixed', added 'overflow-y-auto' and vertical padding 'py-10'
-      className="fixed inset-0 z-50 flex items-center justify-center bg-black/40 backdrop-blur-sm px-4 py-10 overflow-y-auto opacity-0"
+      className="fixed inset-0 z-50 flex items-center justify-center backdrop-blur-sm px-4 py-10 overflow-y-auto opacity-0"
       onClick={handleClose}
     >
       <div
