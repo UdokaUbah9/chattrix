@@ -3,7 +3,7 @@
 import Footer from "../../components/Footer";
 import { useSelector, useDispatch } from "react-redux";
 import { usePathname, useRouter } from "next/navigation";
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react"; // 👈 Added useRef
 import {
   clearUser,
   setActiveNotice,
@@ -17,7 +17,7 @@ import {
   setMessages,
 } from "@/store/authSlice";
 import { persistor } from "../../store/index";
-import { Poppins } from "next/font/google"; // 👈 Change to Poppins
+import { Poppins } from "next/font/google";
 import { socket } from "@/utils/socket";
 import SmileLoader from "@/components/SmileLoader";
 import GameChallengeModal from "@/components/GameChallengeModal";
@@ -25,9 +25,9 @@ import { X } from "lucide-react";
 import toast from "react-hot-toast";
 
 const poppins = Poppins({
-  weight: ["400", "600", "700"], // 👈 Define the weights you need
+  weight: ["400", "600", "700"],
   subsets: ["latin"],
-  variable: "--font-poppins", // 👈 Rename the variable
+  variable: "--font-poppins",
   display: "swap",
 });
 
@@ -35,6 +35,10 @@ export default function DashboardGuard({ children }) {
   const pathname = usePathname();
   const router = useRouter();
   const dispatch = useDispatch();
+
+  // ⚡ Create a reference targeting the actual scroll container element
+  const scrollContainerRef = useRef(null);
+
   const {
     user,
     isHydrated,
@@ -58,8 +62,17 @@ export default function DashboardGuard({ children }) {
 
   const isChatting = pathname.includes("/chat/") && activeChat?.receiverId;
 
+  // ⚡ SCROLL TO TOP TRIGGER ON PAGE CHANGE
   useEffect(() => {
-    // 1. WAIT until Redux is hydrated and check if we even have a token
+    if (scrollContainerRef.current) {
+      scrollContainerRef.current.scrollTo({
+        top: 0,
+        left: 0,
+        behavior: "instant",
+      });
+    }
+  }, [pathname]);
+  useEffect(() => {
     if (!isHydrated) return;
 
     if (!token || !user) {
@@ -84,23 +97,21 @@ export default function DashboardGuard({ children }) {
           },
         );
 
-        // 2. Check if the server actually authorized the token
         if (!res.ok) {
           throw new Error("Session expired or invalid token");
         }
 
         const data = await res.json();
-
-        setIsValidating(false); // Success! Stop showing loader
+        setIsValidating(false);
       } catch (err) {
-        dispatch(clearUser()); // Wipe the "fake" or expired data
-        await persistor.purge(); // Clears LocalStorage Disk officially
+        dispatch(clearUser());
+        await persistor.purge();
         router.replace("/login");
       }
     };
 
     checkUser();
-  }, [isHydrated, token, user, router, dispatch, session]); // 3. Added token/user/dispatch here
+  }, [isHydrated, token, user, router, dispatch, session]);
 
   // DYNAMIC PAGE NAME
   useEffect(
@@ -125,11 +136,9 @@ export default function DashboardGuard({ children }) {
     [pageName, pathname],
   );
 
-  //////////////////////////////////////////////////
   useEffect(() => {
     if (!socket || !user) return;
 
-    //Attach the identity to the socket's auth object
     socket.auth = {
       userId: user._id,
       userName: user.username,
@@ -140,21 +149,18 @@ export default function DashboardGuard({ children }) {
     const fetchOnlineUsersId = (onlineIds) => {
       dispatch(setOnlineUserList(onlineIds));
     };
-    // Function to perform the handshake
+
     const identify = () => {
       socket.emit("identify-user", user._id);
       socket.on("update-online-users", fetchOnlineUsersId);
     };
 
-    //If disconnected, Connect it
     if (socket.disconnected) {
       socket.connect();
     }
 
-    // 1. Identify immediately if already connected
     if (socket.connected) identify();
 
-    // 2. Identify whenever the socket connects (or reconnects after a refresh)
     socket.on("connect", identify);
 
     return () => {
@@ -163,7 +169,6 @@ export default function DashboardGuard({ children }) {
     };
   }, [user, dispatch]);
 
-  /////////////////////////////////////////////////////////////////////////////
   useEffect(() => {
     if (!socket) return;
 
@@ -177,7 +182,6 @@ export default function DashboardGuard({ children }) {
     return () => socket.off("receive-challenge", handleChallenge);
   }, [dispatch]);
 
-  // UseEffect to re-render the Game rejection
   useEffect(() => {
     if (!socket) return;
 
@@ -194,7 +198,6 @@ export default function DashboardGuard({ children }) {
         }),
       );
 
-      // Auto-hide after 5 seconds if you want, or keep it pinned!
       hideTimer = setTimeout(() => dispatch(setActiveNotice(null)), 5000);
     });
 
@@ -204,34 +207,31 @@ export default function DashboardGuard({ children }) {
     };
   }, [dispatch]);
 
-  // Handle reject Challenge
   const handleRejectChallenge = function () {
     dispatch(setIsShowChallengeModal(false));
 
     socket.emit("reject-challenge", {
       receiverId: inComingChallenge.sender._id,
-      senderId: user._id, // The ID of the person who challenged you
+      senderId: user._id,
     });
   };
 
   const isOnline = onlineUserList.includes(inComingChallenge?.sender?._id);
-  //accept challenge
+
   const onAccept = () => {
     if (!isOnline) {
       toast.error(`${inComingChallenge.sender.username} is now offline`);
       return;
     }
-    // We ONLY send the challengeId.
-    // The server knows who 'we' are via the socket connection itself.
+
     socket.emit("accept-challenge", {
       challengeId: inComingChallenge.challengeId,
-      sender: inComingChallenge.sender, // The person who challenged you
-      receiverId: user._id, // Your ID
+      sender: inComingChallenge.sender,
+      receiverId: user._id,
       gamePath: inComingChallenge.gamePath,
     });
   };
 
-  // Inside your Layout or Game Launcher component
   useEffect(() => {
     const handleAssignRole = (role) => {
       dispatch(setPlayerRole(role));
@@ -256,11 +256,9 @@ export default function DashboardGuard({ children }) {
 
   useEffect(() => {
     if (activeNotice?.message) {
-      // Trigger the toast
       toast.error(activeNotice.message, {
-        id: "active-notice-toast", // Prevents duplicate toasts if the state updates rapidly
+        id: "active-notice-toast",
         icon: "🚫",
-        // Smile Neobrutalist Style
         style: {
           border: "3px solid #000",
           borderRadius: "9999px",
@@ -272,17 +270,14 @@ export default function DashboardGuard({ children }) {
         },
       });
 
-      // Optional: Clear the Redux state after showing it
       dispatch(setActiveNotice(null));
     }
   }, [activeNotice, dispatch]);
 
-  // Listen for the status changing to "read"
   useEffect(() => {
     if (!socket) return;
 
-    socket.on("message-delivered-update", ({ messageId }) => {
-      // ✅ Map through the current 'messages' from your selector
+    const handleDeliveredUpdate = ({ messageId }) => {
       const updatedMessages = messages.map((msg) =>
         String(msg._id) === String(messageId)
           ? { ...msg, status: "delivered" }
@@ -290,9 +285,11 @@ export default function DashboardGuard({ children }) {
       );
 
       dispatch(setMessages(updatedMessages));
-    });
+    };
 
-    return () => socket.off("message-delivered-update");
+    socket.on("message-delivered-update", handleDeliveredUpdate);
+
+    return () => socket.off("message-delivered-update", handleDeliveredUpdate);
   }, [dispatch, messages]);
 
   if (!isHydrated || isValidating) return <SmileLoader />;
@@ -308,11 +305,14 @@ export default function DashboardGuard({ children }) {
         !isMessage && !isGamePath && "pt-0 pb-0"
       } ${isGamePath ? "bg-yellow-400" : "bg-yellow-300"} ${poppins.className}`}
     >
-      {/* 1. Sidebar/Footer - Appears first in DOM for md:flex-row (Left side) */}
+      {/* 1. Sidebar/Footer */}
       {!isRequestPath && !isGamePath && !isPasswordPage && <Footer />}
 
-      {/* 2. Main Content Container */}
-      <div className="flex-1 flex flex-col w-full min-w-0 overflow-y-auto scrollbar-hide">
+      {/* 2. Main Content Container - ⚡ Attached Ref Here to capture scroll height control */}
+      <div
+        ref={scrollContainerRef}
+        className="flex-1 flex flex-col w-full min-w-0 overflow-y-auto scrollbar-hide"
+      >
         {!isPageName && !isGamePath && !isPasswordPage && (
           <p
             className={`text-2xl font-bold text-zinc-900 uppercase leading-none select-none ${!isGamePath && "p-5"} tracking-wide`}
