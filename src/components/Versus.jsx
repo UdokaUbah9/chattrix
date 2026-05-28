@@ -24,7 +24,7 @@ function Versus({ showSteal, isMyTurn }) {
         <p className="text-black text-lg text-center font-semibold uppercase">
           {p1Label?.split(" ")[0]}
         </p>
-        <div className="relative size-14 shrink-0 ring-2 ring-yellow-400/50 rounded-full">
+        <div className="relative size-9 shrink-0 ring-2 ring-yellow-400/50 rounded-full">
           <Image
             src={p1.avatar}
             fill
@@ -42,7 +42,7 @@ function Versus({ showSteal, isMyTurn }) {
             isMyTurn={isMyTurn}
           />
           <p
-            className={`${techMono.className} text-black font-bold text-5xl text-center`}
+            className={`${techMono.className} text-black font-bold text-3xl text-center`}
           >
             {scores?.player1 || 0}
           </p>
@@ -50,7 +50,7 @@ function Versus({ showSteal, isMyTurn }) {
       </div>
 
       <p
-        className={`${techMono.className} text-yellow-400 text-7xl font-bold
+        className={`${techMono.className} text-yellow-400 text-3xl font-bold
   -rotate-12 select-none
   drop-shadow-[4px_4px_0px_rgba(0,0,0,1)] 
   filter brightness-110 saturate-150`}
@@ -62,7 +62,7 @@ function Versus({ showSteal, isMyTurn }) {
         <p className="text-black font-semibold text-lg text-center uppercase">
           {p2Label?.split(" ")[0]}
         </p>
-        <div className="relative size-14 shrink-0 ring-2 ring-yellow-400/50 rounded-full">
+        <div className="relative size-9 shrink-0 ring-2 ring-yellow-400/50 rounded-full">
           <Image
             src={p2.avatar}
             fill

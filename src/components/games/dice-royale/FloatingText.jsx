@@ -47,7 +47,7 @@ export function FloatingText({ trigger, targetPlayer, isMyTurn }) {
   return (
     <div
       ref={textRef}
-      className={`${techMono.className} absolute left-1/2 -translate-x-1/2 font-bold text-5xl
+      className={`${techMono.className} absolute left-1/2 -translate-x-1/2 font-bold text-3xl
       ${isPositive ? "text-green-600" : "text-red-600"}`}
     >
       {text}
