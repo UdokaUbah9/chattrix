@@ -191,8 +191,8 @@ export default function GameArena() {
         <Image
           src="/lamp2.jpg"
           alt="lamp Background"
-          width={200}
-          height={200}
+          width={400}
+          height={400}
           priority
           // 'absolute' pulls it out of the flow so it doesn't push content
           // 'inset-0' and 'w-full h-full' make it cover the parent
@@ -202,9 +202,9 @@ export default function GameArena() {
           <Versus />
         </header>
         <div className="h-[200px] w-full z-50 text-center">
-          <div className="flex flex-col gap-12 items-center">
+          <div className="flex flex-col gap-7 items-center">
             <p
-              className={`text-center tracking-widest font-bold  mt-14 uppercase ${gameTimer === 0 ? "italic text-lg" : `text-3xl ${russoOne.className}`} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-purple-500"}`}
+              className={`text-center tracking-widest font-bold  mt-12 uppercase ${gameTimer === 0 ? "italic text-lg" : `text-3xl ${russoOne.className}`} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-purple-500"}`}
               ref={gameStatusTextRef}
             >
               {!showVictory
