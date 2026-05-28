@@ -259,7 +259,7 @@ export default function ChatInput({ userId, children }) {
                 value={text}
                 onChange={handleInputChange}
                 onFocus={() => setShowPicker(false)}
-                className="w-full bg-transparent text-black p-2 text-base outline-none leading-normal resize-none overflow-y-auto"
+                className="w-full bg-transparent text-zinc-800 px-2 py-1 text-base outline-none leading-normal resize-none overflow-y-auto"
               />
 
               {/* EMOJI BUTTON: Still on the right */}

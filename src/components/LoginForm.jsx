@@ -155,7 +155,7 @@ export default function LoginForm({ setIsFocused }) {
     <>
       {isLoading && <SmileLoader />}
       <form
-        className="flex flex-col items-center justify-center gap-4 md:gap-6 w-full px-5 py-6 md:py-12 max-w-[370px] mx-auto"
+        className="flex flex-col items-center justify-center gap-4 md:gap-6 w-full px-5 py-6 md:py-12 max-w-[370px] mx-auto text-zinc800"
         onSubmit={handleLogin}
         ref={loginFormRef}
       >
@@ -223,7 +223,7 @@ export default function LoginForm({ setIsFocused }) {
             </p>
           )}
           <p
-            className="text-left text-xs mt-3 tracking-wide cursor-pointer w-fit"
+            className="text-left text-xs mt-3 tracking-wide cursor-pointer w-fit text-zinc-600"
             onClick={() => router.replace("/forgotten-password")}
           >
             Forgotten password?

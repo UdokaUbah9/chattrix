@@ -308,14 +308,12 @@ export default function EachMessage() {
     if (holdTimeoutRef.current) clearTimeout(holdTimeoutRef.current);
   };
 
-  // 🛡️ Safe Early Return placement (Below all hook registrations)
   if (!isValidMongoId) {
     return <NotFound />;
   }
 
   const isOnline = onlineUserList.includes(activeChat?.receiverId);
 
-  // Helper calculation for Date Headers
   const getDateHeading = (dateStr) => {
     const today = new Date().toDateString();
     const yesterday = new Date(Date.now() - 86400000).toDateString();
@@ -332,7 +330,7 @@ export default function EachMessage() {
   };
 
   return (
-    <div className="relative w-full h-full max-h-full flex flex-col overflow-hidden">
+    <div className="relative w-full h-full max-h-full flex flex-col overflow-hidden isolation-auto">
       <div className="relative h-full max-h-full w-full overflow-hidden bg-yellow-400 z-50 flex flex-col">
         <Image
           src="/chat-background3.jpg"
@@ -344,8 +342,7 @@ export default function EachMessage() {
         />
         <div className="absolute inset-0 bg-yellow-50 opacity-90 pointer-events-none z-0" />
 
-        {/* This container manages the alignment distributions cleanly */}
-        <div className="relative z-10 flex flex-col h-full w-full justify-between">
+        <div className="relative z-10 flex flex-col h-full w-full justify-between min-h-0">
           {userProfile && (
             <UserProfile
               user={userProfile}
@@ -354,7 +351,7 @@ export default function EachMessage() {
             />
           )}
 
-          {/* HEADER: Added shrink-0 so it never loses size when messages fill the page */}
+          {/* HEADER */}
           <header className="flex items-center justify-between p-4 backdrop-blur-md border-b border-black/5 bg-yellow-300 shrink-0">
             <div className="flex items-center gap-3">
               <div className="md:hidden">
@@ -511,8 +508,6 @@ export default function EachMessage() {
               </div>
             ) : null}
 
-            {/* Modal Image code remains exactly here */}
-
             {/* Dynamic Real-time Chatting Animation Bubble */}
             <div className="h-12 ml-2 mt-2 shrink-0">
               {isTyping && (
@@ -533,13 +528,44 @@ export default function EachMessage() {
             <div ref={scrollRef} />
           </div>
 
-          {/* FOOTER INPUT BOX: Added shrink-0 so it always pins to the viewable bottom layout boundary */}
-          <footer className="p-4 bg-yellow-300 backdrop-blur-md border-t border-black/5 shrink-0 z-10">
+          {/* FOOTER INPUT BOX */}
+          <footer className="w-full shrink-0 z-10">
             <ChatInput userId={userId}>
               <GameList />
             </ChatInput>
           </footer>
         </div>
+
+        {/* ⚡ ROOT-LEVEL IMAGE ZOOM VIEWER (Fixed outside scrolling tags for iOS context) */}
+        {expandedImage && (
+          <div
+            ref={modalRef}
+            className="fixed inset-0 z-50 flex items-center justify-center bg-black/80 backdrop-blur-md opacity-0"
+            onClick={closeExpandedView}
+          >
+            <div
+              className="relative w-[90vw] h-[75vh] md:w-[85vw] md:h-[85vh] flex items-center justify-center"
+              onClick={(e) => e.stopPropagation()}
+            >
+              <div ref={modalImgRef} className="relative w-full h-full">
+                <Image
+                  src={expandedImage}
+                  fill
+                  sizes="90vw"
+                  alt="Expanded view"
+                  className="object-contain"
+                  unoptimized
+                />
+              </div>
+              <button
+                className="absolute top-4 right-4 bg-white/10 hover:bg-white/20 active:scale-95 border border-white/20 text-white rounded-full p-2.5 transition-all shadow-md cursor-pointer"
+                onClick={closeExpandedView}
+              >
+                <X size={24} strokeWidth={2.5} />
+              </button>
+            </div>
+          </div>
+        )}
       </div>
     </div>
   );
