@@ -22,16 +22,16 @@ function EditProfileModal({ onClose, getMyProfile }) {
     setIsEditing(true);
     try {
       const res = await fetch(
-        `${NEXT_PUBLIC_API_URL}/api/smile/v1/users/updateMe`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/updateMe`,
         {
-          method: "PATCH", // Standard for partial updates
+          method: "PATCH",
           headers: {
             "Content-Type": "application/json",
             Authorization: `Bearer ${token}`,
           },
           body: JSON.stringify({
             username: formData.username,
-            avatar: formData.avatar, // Ensure this matches your schema
+            avatar: formData.avatar,
           }),
         },
       );
@@ -48,7 +48,8 @@ function EditProfileModal({ onClose, getMyProfile }) {
     }
   };
 
-  const onSaveClick = async function () {
+  const onSaveClick = async function (e) {
+    e.preventDefault();
     if (isEditing) return;
     await handleUpdateProfile(formData);
     // await getMyProfile();
