@@ -1,5 +1,5 @@
 "use client";
-import React, { useEffect, useRef, useState } from "react";
+import React, { useEffect, useRef, useState, useCallback } from "react";
 import BackButton from "@/components/BackButton";
 import ChatInput from "@/components/ChatInput";
 import GameList from "@/components/GameList";
@@ -22,11 +22,13 @@ export default function EachMessage() {
   const searchParams = useSearchParams();
   const username = searchParams.get("name");
   const profilePicture = searchParams.get("profile-picture");
+
   const [expandedImage, setExpandedImage] = useState(null);
   const [selectedMessageId, setSelectedMessageId] = useState(null);
   const [error, setError] = useState(false);
   const [friend, setFriend] = useState({ username: username || "User" });
   const [userProfile, setUserProfile] = useState(null);
+
   const messagesContainerRef = useRef();
   const scrollRef = useRef();
   const modalRef = useRef();
@@ -85,7 +87,7 @@ export default function EachMessage() {
     };
   }, [userId, username, profilePicture, dispatch, isValidMongoId]);
 
-  const fetchChatHistory = async () => {
+  const fetchChatHistory = useCallback(async () => {
     if (!isValidMongoId) return;
     setError(false);
     try {
@@ -109,13 +111,13 @@ export default function EachMessage() {
     } catch (err) {
       toast.error("Fetching history failed");
     }
-  };
+  }, [userId, token, dispatch, isValidMongoId]);
 
   useEffect(() => {
     if (token && userId && isValidMongoId) {
       fetchChatHistory();
     }
-  }, [token, userId, isValidMongoId]);
+  }, [token, userId, isValidMongoId, fetchChatHistory]);
 
   const fetchUserProfile = async (id) => {
     setError(false);
@@ -188,6 +190,7 @@ export default function EachMessage() {
         String(newMessage.receiverId) === String(userId);
 
       if (isRelevant) {
+        // Safe, state-independent functional dispatch update
         dispatch((dispatch, getState) => {
           const { messages: currentMessages } = getState().auth;
           const exists = currentMessages.some((m) => m._id === newMessage._id);
@@ -271,7 +274,9 @@ export default function EachMessage() {
       );
       dispatch(setMessages(updatedMessages));
     }
-  }, [totalMessagesCount, userId, dispatch, isValidMongoId]);
+    // Explicitly avoiding tracking 'messages' array mutation reference to avoid event loops
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [totalMessagesCount, userId, isValidMongoId]);
 
   // Smooth Scroll Anchor
   useEffect(() => {
@@ -290,7 +295,7 @@ export default function EachMessage() {
     return () => socket.off("sender-typing-status", handleStatus);
   }, [dispatch]);
 
-  // Click Outside Popover Dismisals
+  // Click Outside Popover Dismissals
   useEffect(() => {
     const handleClickOutside = () => setSelectedMessageId(null);
     window.addEventListener("click", handleClickOutside);
@@ -342,7 +347,6 @@ export default function EachMessage() {
         />
         <div className="absolute inset-0 bg-yellow-50 opacity-90 pointer-events-none z-0" />
 
-        {/* FIX 1: Replaced justify-between with min-h-0 so height properties propagate down to the viewport accurately */}
         <div className="relative z-10 flex flex-col h-full w-full min-h-0">
           {userProfile && (
             <UserProfile
@@ -433,7 +437,10 @@ export default function EachMessage() {
                           {msg.image && (
                             <div
                               className="mb-2 relative w-full min-w-[200px] h-48 cursor-pointer"
-                              onClick={() => setExpandedImage(msg.image)}
+                              onClick={(e) => {
+                                e.stopPropagation();
+                                setExpandedImage(msg.image);
+                              }}
                             >
                               <Image
                                 src={msg.image}
@@ -510,7 +517,7 @@ export default function EachMessage() {
             <div className="h-12 ml-2 mt-2 shrink-0">
               {isTyping && (
                 <div className="flex items-end gap-1 animate-in fade-in slide-in-from-bottom-2 text-left">
-                  <p className="animate-bounce text-xl">🤳🏼</p>
+                  <p className="animate-bounce text-xl">轴</p>
                   <div className="relative">
                     <div className="absolute -bottom-2 -left-1 w-2 h-2 bg-white rounded-full shadow-sm" />
                     <div className="absolute -bottom-1 left-1 w-3 h-3 bg-white rounded-full shadow-sm" />
@@ -526,7 +533,6 @@ export default function EachMessage() {
             <div ref={scrollRef} />
           </div>
 
-          {/* FIX 2: Swapped out padding adjustments for explicit positioning blocks with mt-auto */}
           <footer className="p-4 bg-yellow-300 backdrop-blur-md border-t border-black/5 shrink-0 z-10 mt-auto">
             <ChatInput userId={userId}>
               <GameList />
@@ -534,6 +540,36 @@ export default function EachMessage() {
           </footer>
         </div>
       </div>
+
+      {expandedImage && (
+        <div
+          ref={modalRef}
+          className="absolute inset-0 z-[100] flex items-center justify-center bg-black/90 opacity-0 backdrop-blur-sm"
+          onClick={closeExpandedView}
+        >
+          <button
+            className="absolute top-4 right-4 z-50 p-2.5 rounded-full bg-white/10 hover:bg-white/20 text-white transition-colors cursor-pointer"
+            onClick={closeExpandedView}
+          >
+            <X size={24} />
+          </button>
+
+          <div
+            ref={modalImgRef}
+            className="relative w-[90vw] h-[75vh] max-w-4xl select-none"
+            onClick={(e) => e.stopPropagation()}
+          >
+            <Image
+              src={expandedImage}
+              alt="Expanded viewport"
+              fill
+              sizes="100vw"
+              className="object-contain"
+              priority
+            />
+          </div>
+        </div>
+      )}
     </div>
   );
 }
