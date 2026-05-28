@@ -3,9 +3,8 @@ import React, { useEffect, useRef, useState } from "react";
 import EmojiPicker from "emoji-picker-react";
 import {
   SendHorizontal,
-  Paperclip,
-  Smile,
   Keyboard,
+  Smile,
   Gamepad2,
   X,
   Images,
@@ -24,7 +23,6 @@ import toast from "react-hot-toast";
 
 export default function ChatInput({ userId, children }) {
   const [text, setText] = useState("");
-  const [error, setError] = useState("");
   const [isLoading, setIsLoading] = useState(false);
   const [showPicker, setShowPicker] = useState(false);
   const [isOpenGameList, setIsOpenGameList] = useState(false);
@@ -38,10 +36,8 @@ export default function ChatInput({ userId, children }) {
   const toggleEmojiPicker = (e) => {
     e.stopPropagation();
     if (!showPicker) {
-      // 1. If we are opening the picker, hide the native keyboard
       inputRef.current?.blur();
     } else {
-      // 2. If we are closing the picker to show keyboard, focus the input
       inputRef.current?.focus();
     }
     setShowPicker(!showPicker);
@@ -85,8 +81,6 @@ export default function ChatInput({ userId, children }) {
     );
   };
 
-  /////////////Handle image upload ///////////////////////////
-
   // SEND MESSAGE
   const onSendMessage = async function (imageData = null) {
     const messageText = text.trim();
@@ -106,13 +100,11 @@ export default function ChatInput({ userId, children }) {
     };
 
     const nextMessages = [...messages, optimisticMessage];
-
     dispatch(setMessages(nextMessages));
 
     setText("");
     setPreview(null);
 
-    // Close Emoji Picker
     if (showPicker) {
       setShowPicker(false);
     }
@@ -155,8 +147,6 @@ export default function ChatInput({ userId, children }) {
         );
         setPreview(null);
       } else {
-        // This will tell you EXACTLY what went wrong (e.g., "File too large")
-
         toast.error(data.message || "Failed to send image");
       }
     } catch (err) {
@@ -166,22 +156,18 @@ export default function ChatInput({ userId, children }) {
     }
   };
 
-  // SENDING THE IMAGE
   const handleImageChange = (e) => {
     const file = e.target.files[0];
     if (!file) return;
 
-    // Optional: Add a size check here (e.g., 5MB)
-
     const reader = new FileReader();
     reader.readAsDataURL(file);
     reader.onloadend = () => {
-      // This triggers the unified function above
       setPreview(reader.result);
     };
   };
 
-  // UseEffect for expandable input
+  // Expandable input tracking
   useEffect(() => {
     if (!inputRef.current) return;
     inputRef.current.style.height = "auto";
@@ -193,16 +179,13 @@ export default function ChatInput({ userId, children }) {
   const handleInputChange = (e) => {
     setText(e.target.value);
 
-    // 1. Tell server they ARE typing
     socket.emit("typing", {
       receiverId: activeChat?.receiverId,
       isTyping: true,
     });
 
-    // 2. Clear old timer
     if (typingTimeoutRef.current) clearTimeout(typingTimeoutRef.current);
 
-    // 3. Set timer to stop typing indicator after 2 seconds of inactivity
     typingTimeoutRef.current = setTimeout(() => {
       socket.emit("typing", {
         receiverId: activeChat?.receiverId,
@@ -212,16 +195,24 @@ export default function ChatInput({ userId, children }) {
   };
 
   return (
-    <div className="fixed bottom-0 left-0 w-full bg-yellow-300 border-t border-white/5">
-      <div className="max-w-3xl mx-auto flex flex-col">
-        {/* The Input Bar */}
+    // Base layout remains safely clamped to browser window coordinates
+    <div className="fixed bottom-0 left-0 w-full bg-yellow-300 border-t border-white/5 z-40">
+      <div className="max-w-3xl mx-auto flex flex-col relative">
+        {/* Game Menu Placement Injector */}
+        {isOpenGameList &&
+          React.cloneElement(children, {
+            isOpen: isOpenGameList,
+            onClose: handleCloseGameList,
+          })}
+
+        {/* Input Controls Bar */}
         <div className="flex items-end gap-2 p-2">
           <input
             type="file"
             accept="image/*"
             className="hidden"
             ref={imageRef}
-            onChange={handleImageChange} // We'll build this next
+            onChange={handleImageChange}
           />
           <button
             onClick={() => imageRef.current.click()}
@@ -231,14 +222,13 @@ export default function ChatInput({ userId, children }) {
           </button>
 
           <div className="flex-1 bg-yellow-50 rounded-2xl flex flex-col px-2 border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)]">
-            {/* PREVIEW: Moved to the left using self-start */}
             {preview && (
               <div className="relative p-2 self-start mt-1">
                 <div className="relative h-20 w-20">
                   <Image
                     src={preview}
                     alt="Preview"
-                    fill // This makes it fill the parent container
+                    fill
                     className="object-cover rounded-lg border border-black"
                     unoptimized
                   />
@@ -262,7 +252,6 @@ export default function ChatInput({ userId, children }) {
                 className="w-full bg-transparent text-zinc-800 px-2 py-1 text-base outline-none leading-normal resize-none overflow-y-auto"
               />
 
-              {/* EMOJI BUTTON: Still on the right */}
               <button
                 onClick={toggleEmojiPicker}
                 className="p-3 text-zinc-700 hover:text-purple-600 cursor-pointer z-50 transition-colors"
@@ -288,7 +277,7 @@ export default function ChatInput({ userId, children }) {
           </button>
         </div>
 
-        {/* 3. The Picker area*/}
+        {/* Emoji Tray */}
         {showPicker && (
           <div className="w-full h-[300px] animate-in slide-in-from-bottom duration-200">
             <EmojiPicker
@@ -303,11 +292,6 @@ export default function ChatInput({ userId, children }) {
             />
           </div>
         )}
-        {isOpenGameList &&
-          React.cloneElement(children, {
-            isOpen: isOpenGameList,
-            onClose: handleCloseGameList,
-          })}
       </div>
     </div>
   );

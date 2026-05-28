@@ -134,7 +134,7 @@ export default function GameList({ isOpen, onClose }) {
   return (
     <div
       ref={containerRef}
-      className="absolute bottom-20 left-4 right-4 bg-zinc-900/95 backdrop-blur-2xl border border-white/10 rounded-4xl p-4 sm:p-5 shadow-[0_30px_60px_-15px_rgba(0,0,0,0.7)] z-60 flex flex-col max-h-[65vh] sm:max-h-[75vh]"
+      className="absolute bottom-20 left-4 right-4 bg-zinc-900/95 backdrop-blur-2xl border border-white/10 rounded-4xl p-4 sm:p-5 z-60 flex flex-col max-h-[65vh] sm:max-h-[75vh]"
     >
       {/* Header */}
       <div className="flex justify-between items-center mb-4 px-1 shrink-0">
