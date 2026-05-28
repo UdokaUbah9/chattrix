@@ -204,7 +204,7 @@ export default function GameArena() {
         <div className="h-[200px] w-full z-50 text-center">
           <div className="flex flex-col gap-3 items-center">
             <p
-              className={`text-center tracking-widest font-bold  mt-12 uppercase ${gameTimer === 0 ? "italic text-lg" : `text-3xl ${russoOne.className}`} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-purple-500"}`}
+              className={`text-center tracking-widest font-bold  mt-6 uppercase ${gameTimer === 0 ? "italic text-lg" : `text-3xl ${russoOne.className}`} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-purple-500"}`}
               ref={gameStatusTextRef}
             >
               {!showVictory
