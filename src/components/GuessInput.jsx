@@ -1,6 +1,5 @@
 "use client";
 import { useEffect, useRef, useState } from "react";
-import { motion, AnimatePresence } from "framer-motion";
 import Image from "next/image";
 import { socket } from "@/utils/socket";
 import { useDispatch, useSelector } from "react-redux";
@@ -17,14 +16,12 @@ export default function GuessInput() {
   const scrollRef = useRef(null);
   const router = useRouter();
 
-  // Submit function handler
   const handleSubmit = (e) => {
     e.preventDefault();
     const trimmedValue = guessedValue.toLowerCase().trim();
     if (!trimmedValue || !socket) return;
 
     socket.emit("submit-word", { roomId, word: trimmedValue, playerRole });
-
     setGuessedValue("");
   };
 
@@ -40,12 +37,11 @@ export default function GuessInput() {
   }, [dispatch]);
 
   useEffect(() => {
-    const handleExit = (data) => {
+    const handleExit = () => {
       dispatch(clearGame());
       router.replace("/dashboard");
     };
 
-    // ONLY listen for 'opponent-left' to avoid duplicates
     socket.on("opponent-left", handleExit);
     return () => {
       socket.off("opponent-left", handleExit);
@@ -59,79 +55,90 @@ export default function GuessInput() {
   }, [guessedList?.length]);
 
   return (
-    <div className="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md mx-auto p-4 backdrop-blur-sm rounded-t-3xl flex flex-col h-[50vh] lg:h-[40vh] z-50">
-      {/* 1. SCROLLABLE MESSAGE AREA */}
-      {/* flex-1 makes this take all available space NOT used by the form */}
-      <div className="flex-1 overflow-y-auto p-2 mb-6 flex flex-col gap-2 [scrollbar-width:none] border-t-2 border-black pb-2 rounded-2xl">
-        {guessedList &&
-          guessedList.length > 0 &&
-          guessedList.map((data, index) => (
-            <div
-              key={index}
-              className={`
-                ${data.playerRole === playerRole ? "text-right" : "text-left"} mb-5
-              `}
-            >
-              <p className="font-bold text-sm mb-1 uppercase">
-                {data.player.id === user._id
-                  ? "YOU"
-                  : data.player.username.split(" ")[0]}
-              </p>
+    // CRITICAL FIX: Dropped fixed positioning properties completely.
+    // It now matches the 100% height boundaries of its upper flex container hub.
+    <div className="absolute inset-0 w-full h-full p-4 bg-white/80 backdrop-blur-md rounded-t-[2.5rem] border-t-4 border-black flex flex-col justify-between shadow-[0_-8px_30px_rgb(0,0,0,0.06)]">
+      {/* SCROLLABLE GUESS FLOW LIST */}
+      <div className="flex-1 overflow-y-auto pr-1 mb-3 flex flex-col gap-3 [scrollbar-width:none] [-ms-overflow-style:none]">
+        {guessedList && guessedList.length > 0 ? (
+          guessedList.map((data, index) => {
+            const isMe = data.playerRole === playerRole;
+            return (
               <div
-                className={`flex items-end gap-2 ${data.playerRole === playerRole ? "flex-row-reverse" : "flex-row"}`}
+                key={index}
+                className={`flex flex-col ${isMe ? "items-end" : "items-start"}`}
               >
-                <div className="relative size-10 shrink-0 ring-2 ring-yellow-400 rounded-full overflow-hidden">
-                  <Image
-                    src={data.player.avatar}
-                    fill
-                    alt="profile picture"
-                    className="object-cover"
-                  />
-                </div>
-                <p
-                  className={`p-3 max-w-[70%] text-lg shadow-sm rounded-2xl tracking-wide ${
-                    data.playerRole === playerRole
-                      ? "bg-purple-200 text-slate-900 rounded-br-none"
-                      : "bg-white text-slate-900 rounded-bl-none"
-                  }`}
+                <span className="text-[10px] font-bold text-zinc-400 mb-0.5 tracking-wider uppercase">
+                  {data.player?.id === user?._id
+                    ? "YOU"
+                    : data.player?.username?.split(" ")[0]}
+                </span>
+
+                <div
+                  className={`flex items-end gap-2 max-w-[85%] ${isMe ? "flex-row-reverse" : "flex-row"}`}
                 >
-                  {data.word}
-                </p>
+                  <div className="relative size-8 shrink-0 ring-2 ring-purple-400 rounded-full overflow-hidden shadow-xs bg-zinc-100">
+                    <Image
+                      src={data.player?.avatar || "/default-avatar.png"}
+                      fill
+                      alt="avatar"
+                      className="object-cover"
+                    />
+                  </div>
+                  <div
+                    className={`px-3 py-2 text-sm font-medium tracking-wide shadow-xs border border-black/5
+                      ${
+                        isMe
+                          ? "bg-purple-500 text-white rounded-2xl rounded-br-none"
+                          : "bg-zinc-100 text-zinc-900 rounded-2xl rounded-bl-none"
+                      }`}
+                  >
+                    {data.word}
+                  </div>
+                </div>
               </div>
-            </div>
-          ))}
-        {/* Invisible div to help with auto-scrolling if you add it later */}
+            );
+          })
+        ) : (
+          <div className="flex-1 flex items-center justify-center opacity-30 italic text-xs font-semibold text-zinc-400 uppercase tracking-widest">
+            Send a guess to begin...
+          </div>
+        )}
         <div ref={scrollRef} />
       </div>
 
-      {/* 2. STATIONARY FORM AREA */}
-      <form onSubmit={handleSubmit} className="flex flex-col gap-4 shrink-0">
+      {/* INPUT INTERACTION CONTROL BLOCK */}
+      <form
+        onSubmit={handleSubmit}
+        className="w-full flex flex-col gap-2 shrink-0 pt-2 border-t border-zinc-100"
+      >
         <div className="relative w-full">
           <input
             type="text"
             value={guessedValue}
             onChange={(e) => setGuessedValue(e.target.value)}
             placeholder="UNSCRAMBLE WORD..."
-            className="w-full px-4 py-3 text-md tracking-widest bg-white border-3 border-purple-400 rounded-2xl focus:outline-none focus:ring-2 focus:ring-purple-400 transition-all"
+            className="w-full px-4 py-3 pr-20 text-xs font-bold tracking-widest bg-zinc-50 border-2 border-zinc-300 rounded-xl focus:outline-none focus:border-purple-500 focus:bg-white transition-all uppercase placeholder:text-zinc-400 text-zinc-800"
             autoFocus
           />
 
           {!winner && (
             <button
               type="submit"
-              className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1 font-bold text-green-100 bg-green-600 border-2 border-green-700 rounded-lg text-xs"
+              className="absolute right-2 top-1/2 -translate-y-1/2 px-3 py-1.5 font-black text-white bg-emerald-600 rounded-lg text-[10px] tracking-wider uppercase hover:bg-emerald-700 transition-colors"
             >
-              ENTER
+              Enter
             </button>
           )}
         </div>
 
         {!winner && (
           <button
+            type="button"
             onClick={() => onHandleExit(dispatch, router, roomId, socket)}
-            className="w-fit px-4 py-1.5 font-bold text-red-100 bg-red-600 border-2 border-red-700 rounded-lg uppercase text-xs"
+            className="w-fit self-start px-3 py-1 font-bold text-zinc-400 hover:text-red-500 rounded-md uppercase text-[10px] tracking-wider transition-colors"
           >
-            Quit Game
+            Quit Match
           </button>
         )}
       </form>

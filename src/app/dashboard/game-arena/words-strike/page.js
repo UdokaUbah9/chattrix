@@ -34,6 +34,7 @@ export default function GameArena() {
   const router = useRouter();
   const wallpaperRef = useRef();
   const gameStatusTextRef = useRef();
+  const successSoundRef = useRef(null);
 
   const {
     isGameIntro,
@@ -45,17 +46,19 @@ export default function GameArena() {
     showVictory,
     gameStatus,
     isHydrated,
-    playerRole,
   } = useSelector((store) => store.auth);
 
-  ////////////////////////////
+  // Safely initialize audio instance on client-side mount
+  useEffect(() => {
+    successSoundRef.current = new Audio("/sounds/points-stolen.mp3");
+  }, []);
 
   useGSAP(() => {
     if (isGameIntro) {
       gsap.to(wallpaperRef.current, {
         opacity: 0,
         duration: 1,
-        delay: 4, // Wait 4 seconds before fading
+        delay: 4,
         ease: "power2.inOut",
       });
     }
@@ -68,39 +71,30 @@ export default function GameArena() {
       { opacity: 1, y: 0, duration: 0.5, ease: "power2.out" },
     );
   }, [scrambleWord, gameTimer === 0]);
-  // GameArena.js
 
-  // 1. HANDSHAKE & INTRO LOGIC
   useEffect(() => {
     dispatch(setScrambleWord(""));
-    dispatch(setGameTimer(null)); // or 60 if you want a placeholder
+    dispatch(setGameTimer(null));
     dispatch(setGameStatus(""));
     if (!roomId || !user?._id) return;
 
-    // Join the room and sync the socket
     socket.emit("join-room", roomId);
     socket.emit("rejoin-game", { roomId, userId: user._id });
 
-    // Start the 5-second intro
     const introTimeout = setTimeout(() => {
       dispatch(setGameIntro(false));
-
-      // Signal the server that we are ready to see the word and start the clock
-      // Using 'player-ready-in-arena' to match your server listener
       socket.emit("player-ready-in-arena", roomId);
     }, 5000);
 
     return () => clearTimeout(introTimeout);
   }, [roomId, user?._id, dispatch]);
 
-  // 2. SAFETY REDIRECT
   useEffect(() => {
     if (isHydrated && !roomId) {
       router.replace("/dashboard");
     }
   }, [roomId, router, isHydrated]);
 
-  // 3. SOCKET LISTENERS (The "Receiver" Hub)
   useEffect(() => {
     if (!socket) return;
 
@@ -113,16 +107,10 @@ export default function GameArena() {
       dispatch(setGameTimer(time));
     });
 
-    const successSound =
-      typeof window !== "undefined"
-        ? new Audio("/sounds/points-stolen.mp3")
-        : null;
-
-    // 2. Inside your socket listener setup:
     socket.on("correct-guess", (data) => {
-      if (successSound) {
-        successSound.currentTime = 0;
-        successSound.play();
+      if (successSoundRef.current) {
+        successSoundRef.current.currentTime = 0;
+        successSoundRef.current.play().catch(() => {});
       }
       dispatch(
         setScores({
@@ -161,20 +149,19 @@ export default function GameArena() {
   }, [dispatch, router]);
 
   return (
-    <main className="relative flex flex-col p-4 overflow-hidden">
+    <main className="relative w-full h-screen  flex flex-col bg-slate-50 overflow-hidden select-none">
       {isGameIntro && (
         <div
-          className="fixed inset-0 z-999 h-screen w-screen flex items-center justify-center bg-black "
+          className="fixed inset-0 z-[999] h-screen w-screen flex items-center justify-center bg-black"
           ref={wallpaperRef}
         >
           <Image
-            src="/neon-strike.jpg" // The one with Dice-Royale 2026
-            alt="Dice Royale Intro"
+            src="/neon-strike.jpg"
+            alt="World Strike Intro"
             fill
             className="object-contain"
             priority
           />
-          {/* Optional: Add a subtle loading spinner or "Get Ready" text */}
           <div className="absolute bottom-20 flex flex-col items-center">
             <div className="w-12 h-12 border-4 border-yellow-500 border-t-transparent rounded-full animate-spin"></div>
             <p className="text-white font-black mt-4 tracking-wide uppercase">
@@ -184,61 +171,68 @@ export default function GameArena() {
         </div>
       )}
 
-      <div
-        className={`flex flex-col p-4 transition-all duration-700 ${showVictory && "h-screen"}  w-full 
-          ${showVictory && "blur-xs scale-95 opacity-50"}`}
-      >
+      {/* Background Graphic Watermark */}
+      <div className="absolute inset-0 z-0 pointer-events-none opacity-40 mix-blend-multiply">
         <Image
           src="/lamp2.jpg"
           alt="lamp Background"
-          width={400}
-          height={400}
+          fill
           priority
-          // 'absolute' pulls it out of the flow so it doesn't push content
-          // 'inset-0' and 'w-full h-full' make it cover the parent
-          className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 z-0 opacity-65 border-transparent"
+          className="object-cover object-center"
         />
-        <header className="flex justify-between z-50 ">
+      </div>
+
+      {/* PRIMARY LAYOUT FLOW CONTROLLER */}
+      <div
+        className={`relative z-10 flex flex-col w-full h-full max-w-md mx-auto transition-all duration-700 
+          ${showVictory ? "blur-xs scale-95 opacity-50 pointer-events-none" : ""}`}
+      >
+        {/* UPPER PANEL: Info metrics & Word Box (45% viewport height space) */}
+        <header className="w-full flex flex-col p-4 pt-3 h-[45vh] sm:h-[48vh] justify-between shrink-0 z-50">
           <Versus />
-        </header>
-        <div className="h-[200px] w-full z-50 text-center">
-          <div className="flex flex-col gap-12 items-center">
-            <p
-              className={`text-center tracking-widest font-bold  mt-14 uppercase ${gameTimer === 0 ? "italic text-lg" : `text-5xl ${russoOne.className}`} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-purple-500"}`}
+
+          <div className="flex flex-col items-center justify-center flex-1 my-auto gap-4">
+            {/* FIXED: The text is now enclosed beautifully inside ONE single h2 element */}
+            <h2
               ref={gameStatusTextRef}
+              className={`text-center tracking-widest font-black uppercase max-w-full break-words px-2 transition-colors
+                ${gameTimer === 0 ? "italic text-base text-zinc-600" : `text-4xl sm:text-5xl ${russoOne.className}`} 
+                ${gameTimer <= 15 && gameTimer > 0 ? "text-red-500 animate-pulse" : "text-purple-600"}`}
             >
               {!showVictory
                 ? gameTimer === 0
                   ? gameStatus
                   : scrambleWord
                 : ""}
-            </p>
+            </h2>
+
+            {/* Timer Layout Hub Frame */}
             <div
-              className={`${techMono.className} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-green-700"} font-bold text-4xl flex items-center gap-2`}
+              className={`${techMono.className} ${gameTimer <= 15 ? "text-red-500 animate-pulse" : "text-emerald-700"} 
+                font-black text-2xl sm:text-3xl flex items-center gap-2 bg-white/60 backdrop-blur-xs py-1 px-4 rounded-full border border-white/40`}
             >
-              <div className="relative w-12 h-12">
-                {/* Red border helps you see the box */}
+              <div className="relative w-8 h-8">
                 <Image
                   src="/watch.png"
                   alt="Stop Watch"
                   fill
-                  className="object-contain object-center"
+                  className="object-contain"
                 />
               </div>
-
-              <span className="font-bold">{gameTimer}</span>
+              <span>{gameTimer ?? "--"}</span>
             </div>
           </div>
+        </header>
 
-          {/* <footer className="bg-purple-100  p-0 w-full flex flex-col gap-5 mt-8"> */}
+        {/* LOWER PANEL: Dedicated scroll viewport box window context for the GuessInput stream */}
+        <div className="w-full h-[55vh] sm:h-[52vh] relative shrink-0 z-50">
           <GuessInput />
-          {/* </footer> */}
         </div>
       </div>
 
+      {/* VICTORY OVERLAY CONTROLLERS */}
       {showVictory && (
-        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center">
-          {/* 2A: The Transparent Video (Paper Poof) */}
+        <div className="fixed inset-0 z-50 flex flex-col items-center justify-center bg-black/40 backdrop-blur-xs">
           <video
             autoPlay
             playsInline
@@ -247,31 +241,21 @@ export default function GameArena() {
             <source src="/videos/victory-output.webm" type="video/webm" />
           </video>
 
-          {/* 2B: The Typography Layer */}
-          <div className="relative z-10 flex flex-col items-center animate-in fade-in zoom-in duration-500 w-full max-w-[360px]">
-            {/* Crown Icon or Emoji */}
-            <span className="text-4xl mb-4 drop-shadow-lg">👑</span>
-
-            <h1 className="text-5xl text-black italic uppercase tracking-tighter">
+          <div className="relative z-10 flex flex-col items-center animate-in fade-in zoom-in duration-500 w-full max-w-[320px] p-6 bg-white border-4 border-black rounded-3xl shadow-[4px_4px_0px_0px_rgba(0,0,0,1)]">
+            <span className="text-4xl mb-2 drop-shadow-lg">👑</span>
+            <h1 className="text-4xl font-black text-black italic uppercase tracking-tighter">
               Winner!
             </h1>
-
-            <p className="text-black text-3xl font-bold mt-2 uppercase tracking-widest animate-pulse">
-              {winner.username}
+            <p className="text-purple-600 text-2xl font-black mt-1 uppercase tracking-widest animate-pulse">
+              {winner?.username}
             </p>
-            {/* Action Buttons */}
-            <div className="flex gap-4 mt-12">
-              {/* <button
-                onClick={""}
-                className="px-8 py-3 bg-yellow-400 font-black rounded-full hover:scale-110 active:scale-95 transition-all shadow-lg"
-              >
-                PLAY AGAIN
-              </button> */}
+
+            <div className="flex gap-4 mt-8 w-full">
               <button
                 onClick={() => onHandleExit(dispatch, router, roomId, socket)}
-                className="px-8 py-3 text-red-100 bg-red-600 rounded-full hover:scale-110 active:scale-95 transition-all shadow-lg"
+                className="w-full py-3 text-white bg-red-600 font-bold rounded-xl border-2 border-black shadow-[2px_2px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[1px_1px_0px_0px_rgba(0,0,0,1)] active:translate-x-[2px] active:translate-y-[2px] active:shadow-none transition-all uppercase text-sm"
               >
-                EXIT
+                Exit Arena
               </button>
             </div>
           </div>
