@@ -101,7 +101,7 @@ export default function ChangePassword() {
         </button>
 
         <header className="animate-item mb-8 text-center">
-          <h1 className="text-xl text-zinc-800 uppercase italic tracking-tighter leading-none">
+          <h1 className="text-2xl text-zinc-800 uppercase italic tracking-tighter leading-none font-semibold">
             New <span className="text-zinc-800 block">Password?</span>
           </h1>
         </header>
@@ -164,7 +164,7 @@ function PasswordField({ label, placeholder, value, setValue }) {
 
   return (
     <div className="flex flex-col gap-3">
-      <label className="text-xs font-black text-zinc-800 uppercase tracking-wider ml-2">
+      <label className="text-xs text-zinc-800 uppercase tracking-wider ml-2">
         {label}
       </label>
       <div className="relative group">
@@ -177,7 +177,7 @@ function PasswordField({ label, placeholder, value, setValue }) {
           placeholder={placeholder}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          className="w-full bg-white/5 border-2 border-yellow-100 rounded-[25px] pl-14 pr-14 text-zinc-800 placeholder:text-zinc-500 placeholder:text-xs focus:outline-none focus:border-yellow-400 focus:bg-white/10 transition-all text-base"
+          className="w-full bg-white/5 border-2 border-yellow-100 rounded-[25px] py-4 pl-14 pr-14 text-zinc-800 placeholder:text-zinc-500 placeholder:text-xs focus:outline-none focus:border-yellow-400 focus:bg-white/10 transition-all text-base"
         />
         <button
           type="button"
