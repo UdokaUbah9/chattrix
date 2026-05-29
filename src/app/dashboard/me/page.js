@@ -247,7 +247,7 @@ export default function ProfileWithLogout() {
             </div>
 
             {/* 2. User Info */}
-            <div className="text-center mb-10">
+            <div className="text-center mb-6">
               <h1 className="text-2xl  tracking-tight text-black">
                 {getMe.username}
               </h1>
