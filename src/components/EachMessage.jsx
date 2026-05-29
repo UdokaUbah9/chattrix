@@ -419,14 +419,14 @@ export default function EachMessage() {
                         </div>
                       )}
 
-                      <div className="flex items-center gap-3 w-full group relative">
+                      <div className="flex items-center gap-2 w-full group relative">
                         <div
                           onMouseDown={() => handleHoldStart(msg._id)}
                           onMouseUp={handleHoldEnd}
                           onMouseLeave={handleHoldEnd}
                           onTouchStart={() => handleHoldStart(msg._id)}
                           onTouchEnd={handleHoldEnd}
-                          className={`message-bubble relative px-2 py-1 max-w-[80%] md:text-xs text-sm shadow-sm mb-1 font-medium transition-colors wrap-break-word
+                          className={`message-bubble relative px-2 py-1 max-w-[80%] text-xs md:text-sm shadow-sm mb-1 font-medium transition-colors wrap-break-word
                             ${
                               msg.senderId !== userId
                                 ? "bg-purple-200 text-slate-900 ml-auto rounded-2xl rounded-br-none"

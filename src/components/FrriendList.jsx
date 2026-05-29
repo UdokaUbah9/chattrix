@@ -252,7 +252,7 @@ export default function FriendList() {
           <LostInternet onRetry={getAllUsers} />
         ) : (
           <>
-            <p className="mt-2 text-sm font-bold text-zinc-600">
+            <p className="mt-2 text-xs md:text-sm font-bold text-zinc-600">
               {query.length > 0 ? "Search results" : "Recent chats"}
             </p>
 
@@ -288,7 +288,7 @@ export default function FriendList() {
                     >
                       {/* AVATAR */}
                       <div className="relative shrink-0 ">
-                        <div className="relative md:size-9 size-14 rounded-full overflow-hidden bg-purple-100">
+                        <div className="relative size-9 md:size-14 rounded-full overflow-hidden bg-purple-100">
                           <Image
                             src={currentUser.avatar || "/default-dp.png"}
                             fill
@@ -309,7 +309,7 @@ export default function FriendList() {
                       {/* CONTENT */}
                       <div className="flex-1 border-b border-purple-200 px-2 py-1 min-w-0">
                         <div className="flex justify-between items-baseline">
-                          <p className="text-zinc-900 truncate">
+                          <p className="text-zinc-900 truncate text-xs md:text-sm font-semibold">
                             {currentUser.username}
                           </p>
 
@@ -350,7 +350,7 @@ export default function FriendList() {
                               is typing...
                             </span>
                           ) : (
-                            <p className="text-sm text-zinc-500 truncate">
+                            <p className="text-xs md:text-sm text-zinc-500 truncate">
                               {conversationMessage
                                 ? conversationMessage.image
                                   ? "📷 Photo"

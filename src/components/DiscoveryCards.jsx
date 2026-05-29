@@ -79,7 +79,7 @@ export default function DiscoveryCard({ query }) {
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div className="relative shrink-0">
                         {/* 1. IMAGE CONTAINER */}
-                        <div className="relative md:size-9  size-14 rounded-full overflow-hidden bg-purple-100">
+                        <div className="relative size-9  md:size-14 rounded-full overflow-hidden bg-purple-100">
                           <Image
                             src={peep.avatar || "/default-dp.png"}
                             className="object-cover"

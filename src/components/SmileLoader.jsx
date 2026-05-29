@@ -27,8 +27,8 @@ const SmileLoader = () => {
         <div className="animate-squish">
           <Image
             src="/chattrixClap.png"
-            width={200} // 1. Set your preferred display width (e.g., 200px)
-            height={50} // 2. Set the approximate height matching the aspect ratio
+            width={200}
+            height={50}
             priority
             className="object-contain" // Keeps it perfectly sharp
             alt="Chattrix Logo"
