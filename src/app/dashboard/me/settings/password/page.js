@@ -100,12 +100,9 @@ export default function ChangePassword() {
           <ArrowLeft size={32} />
         </button>
 
-        <header className="animate-item mb-10 text-center">
-          <h1 className="text-5xl font-black text-zinc-800 uppercase italic tracking-tighter leading-none">
-            New{" "}
-            <span className="text-zinc-800 block drop-shadow-[0_0_15px_rgba(250,204,21,0.5)]">
-              Password?
-            </span>
+        <header className="animate-item mb-8 text-center">
+          <h1 className="text-xl text-zinc-800 uppercase italic tracking-tighter leading-none">
+            New <span className="text-zinc-800 block">Password?</span>
           </h1>
         </header>
 
@@ -152,7 +149,7 @@ export default function ChangePassword() {
           <button
             type="submit"
             disabled={isUpdating}
-            className="w-full p-6 font-semibold bg-purple-100 text-purple-600 uppercase tracking-wider rounded-2xl transition-all active:scale-90 mt-4 text-sm hover:rotate-1"
+            className="w-full p-3 font-semibold bg-purple-100 text-purple-600 uppercase tracking-wider rounded-2xl transition-all active:scale-90 mt-4 text-sm hover:rotate-1"
           >
             {isUpdating ? "Locking..." : "Lock it in!"}
           </button>
@@ -172,7 +169,7 @@ function PasswordField({ label, placeholder, value, setValue }) {
       </label>
       <div className="relative group">
         <div className="absolute left-5 top-1/2 -translate-y-1/2 text-white/20  transition-colors">
-          <Lock size={20} strokeWidth={3} className="text-zinc-800" />
+          <Lock size={18} strokeWidth={3} className="text-zinc-800" />
         </div>
         <input
           required
@@ -180,7 +177,7 @@ function PasswordField({ label, placeholder, value, setValue }) {
           placeholder={placeholder}
           value={value}
           onChange={(e) => setValue(e.target.value)}
-          className="w-full bg-white/5 border-2 border-yellow-100 rounded-[25px] py-5 pl-14 pr-14 text-zinc-800 placeholder:text-zinc-500 focus:outline-none focus:border-yellow-400 focus:bg-white/10 transition-all font-black text-lg"
+          className="w-full bg-white/5 border-2 border-yellow-100 rounded-[25px] pl-14 pr-14 text-zinc-800 placeholder:text-zinc-500 placeholder:text-xs focus:outline-none focus:border-yellow-400 focus:bg-white/10 transition-all text-base"
         />
         <button
           type="button"

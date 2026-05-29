@@ -35,7 +35,9 @@ export default function Chat() {
 
       {/* 2. TEXT + WAVY UNDERLINE */}
       <div className="mt-4 mb-2">
-        <p className="float-in text-zinc-900 font-bold text-lg">Find peeps</p>
+        <p className="float-in text-zinc-800 font-semibold text-sm">
+          Find peeps
+        </p>
       </div>
 
       {/* 3. THE LIST */}

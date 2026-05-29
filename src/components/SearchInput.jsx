@@ -31,7 +31,7 @@ function SearchInput({ query, setQuery }) {
     <div className="flex justify-start w-full">
       <div
         ref={containerRef}
-        className="relative h-10 group"
+        className="relative h-8 md:h-10 group"
         style={{ width: "50%" }} // Starting state
       >
         {/* 1. THE ICON */}

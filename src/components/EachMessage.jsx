@@ -366,7 +366,7 @@ export default function EachMessage() {
                 className="flex items-center gap-3 active:opacity-70 transition-opacity cursor-pointer"
                 onClick={() => fetchUserProfile(userId)}
               >
-                <div className="relative size-10 shrink-0 ring-2 ring-yellow-400/50 rounded-full">
+                <div className="relative size-9 md:size-14 shrink-0 ring-2 ring-yellow-400/50 rounded-full">
                   <Image
                     src={profilePicture || "/default-dp.png"}
                     fill
@@ -382,7 +382,7 @@ export default function EachMessage() {
                 </div>
 
                 <div className="flex flex-col">
-                  <h2 className="text-zinc-900 font-bold leading-none">
+                  <h2 className="text-zinc-900 font-semibold leading-none text-sm">
                     {friend.username}
                   </h2>
                   <span className="text-xs text-zinc-600 font-medium mt-1">
