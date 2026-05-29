@@ -146,7 +146,7 @@ export default function Verify() {
       <RedirectLoginButton />
       <Smile />
 
-      <p className="text-center">
+      <p className="text-center text-zinc-800">
         Enter the 4-digit code we sent to <br />
         📧 {pendingSignUp?.email || forgottenPasswordEmail}
       </p>
