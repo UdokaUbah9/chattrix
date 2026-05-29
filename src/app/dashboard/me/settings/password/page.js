@@ -1,201 +1,168 @@
 "use client";
-import React, { useState, useRef } from "react";
-import { useRouter } from "next/navigation";
-import { Lock, Eye, EyeOff, ArrowLeft } from "lucide-react";
-import { useGSAP } from "@gsap/react";
-import gsap from "gsap";
+
+import React, { useState } from "react";
+import { Lock, Eye, EyeOff } from "lucide-react";
 import { useSelector } from "react-redux";
 import toast from "react-hot-toast";
 
-export default function ChangePassword() {
-  const [password, setPassword] = useState("");
-  const [newPassword, setNewPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+function ChangePassword() {
   const [isUpdating, setIsUpdating] = useState(false);
-  const { token, user } = useSelector((store) => store.auth);
-  const router = useRouter();
-  const containerRef = useRef(null);
+  const { token } = useSelector((state) => state.auth);
+  const [showPassword, setShowPassword] = useState(false);
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
-  const updatePasswordHandler = async function (e) {
-    if (e) e.preventDefault();
+  const [formData, setFormData] = useState({
+    passwordCurrent: "",
+    password: "",
+    passwordConfirm: "",
+  });
+
+  const handleUpdatePassword = async (passwordData) => {
     setIsUpdating(true);
-
     try {
       const res = await fetch(
-        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/password-change`,
+        `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/updateMyPassword`,
         {
           method: "PATCH",
           headers: {
-            Authorization: `Bearer ${token}`,
             "Content-Type": "application/json",
+            Authorization: `Bearer ${token}`,
           },
-          body: JSON.stringify({
-            id: user._id,
-            password: password.trim(),
-            newPassword: newPassword.trim(),
-            confirmPassword: confirmPassword.trim(),
-          }),
+          body: JSON.stringify(passwordData),
         },
       );
 
       const data = await res.json();
-      if (!res.ok) throw new Error(data.message || "Failed to update");
-
-      router.replace("/dashboard/me");
-      toast.success(data.message);
-    } catch (err) {
-      if (err.name === "AbortError") {
-        toast.error("Request timed out. Try again!");
+      if (data.status === "success") {
+        toast.success("Password updated successfully");
+        setFormData({
+          passwordCurrent: "",
+          password: "",
+          passwordConfirm: "",
+        });
       } else {
-        toast.error(err.message);
+        toast.error(data.message || "Failed to update password");
       }
+    } catch (err) {
+      toast.error("Password update failed");
     } finally {
       setIsUpdating(false);
     }
   };
 
-  useGSAP(
-    () => {
-      const tl = gsap.timeline();
-
-      tl.from(".password-card", {
-        y: 100,
-        rotationX: -20,
-        opacity: 0,
-        duration: 0.8,
-        ease: "elastic.out(1, 0.75)",
-      }).from(
-        ".animate-item",
-        {
-          scale: 0.5,
-          opacity: 0,
-          duration: 0.4,
-          stagger: 0.08,
-          ease: "back.out(2)",
-        },
-        "-=0.4",
-      );
-
-      gsap.to(".password-card", {
-        y: "-=10",
-        duration: 2,
-        repeat: -1,
-        yoyo: true,
-        ease: "sine.inOut",
-      });
-    },
-    { scope: containerRef },
-  );
+  const onSaveClick = async function (e) {
+    e.preventDefault(); // Keeps things safe from unwanted reloads
+    if (isUpdating) return;
+    await handleUpdatePassword(formData);
+  };
 
   return (
-    <div
-      ref={containerRef}
-      className="min-h-screen p-4 pb-32 flex flex-col items-center justify-start overflow-y-auto bg-yellow-50/40 select-none"
-    >
-      {/* Back button container position handling */}
-      <div className="w-full max-w-md flex justify-start pt-4 mb-4">
-        <button
-          onClick={() => router.replace("/dashboard/me")}
-          className="p-3 rounded-full hover:bg-yellow-100 transition-all active:scale-90 text-zinc-600 hover:text-black z-50"
-        >
-          <ArrowLeft size={32} />
-        </button>
-      </div>
-
-      <div className="password-card w-full max-w-md rounded-3xl p-2 z-10 relative">
-        <header className="animate-item mb-8 text-center">
-          <h1 className="text-4xl sm:text-5xl font-black text-zinc-900 uppercase italic tracking-tighter leading-none">
-            New{" "}
-            <span className="text-zinc-900 block drop-shadow-[0_0_15px_rgba(250,204,21,0.3)]">
-              Password?
-            </span>
-          </h1>
-        </header>
-
-        <form
-          className="flex flex-col gap-5 text-zinc-800"
-          onSubmit={updatePasswordHandler}
-        >
-          <div className="animate-item">
-            <PasswordField
-              label="The Old One"
-              placeholder="Don't forget it..."
-              value={password}
-              setValue={setPassword}
+    <div className="w-full max-w-md mx-auto p-4 md:p-0">
+      <form onSubmit={onSaveClick} className="space-y-6">
+        {/* Current Password */}
+        <div className="space-y-1.5">
+          <label className="text-xs tracking-widest uppercase text-zinc-600 font-bold ml-2">
+            Current Password
+          </label>
+          <div className="relative">
+            <Lock
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600"
+              size={18}
             />
-          </div>
-
-          <div className="animate-item flex items-center gap-4 py-2">
-            <div className="h-0.5 bg-zinc-200 flex-1" />
-            <span className="text-xs font-black text-zinc-400 tracking-widest uppercase">
-              The Upgrade
-            </span>
-            <div className="h-0.5 bg-zinc-200 flex-1" />
-          </div>
-
-          <div className="animate-item">
-            <PasswordField
-              label="New Password"
-              placeholder="Make it beefy"
-              value={newPassword}
-              setValue={setNewPassword}
+            <input
+              type={showPassword ? "text" : "password"}
+              className="w-full bg-white/5 border border-zinc-200 rounded-2xl py-4 pl-12 pr-12 text-zinc-800 focus:outline-none focus:border-purple-400/50 transition-all"
+              placeholder="••••••••"
+              value={formData.passwordCurrent}
+              onChange={(e) =>
+                setFormData({ ...formData, passwordCurrent: e.target.value })
+              }
+              required
             />
+            <button
+              type="button"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-700"
+              onClick={() => setShowPassword(!showPassword)}
+            >
+              {showPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
+        </div>
 
-          <div className="animate-item">
-            <PasswordField
-              label="Confirm it"
-              placeholder="Just to be sure"
-              value={confirmPassword}
-              setValue={setConfirmPassword}
+        {/* New Password */}
+        <div className="space-y-1.5">
+          <label className="text-xs tracking-widest uppercase text-zinc-600 font-bold ml-2">
+            New Password
+          </label>
+          <div className="relative">
+            <Lock
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600"
+              size={18}
             />
+            <input
+              type={showNewPassword ? "text" : "password"}
+              className="w-full bg-white/5 border border-zinc-200 rounded-2xl py-4 pl-12 pr-12 text-zinc-800 focus:outline-none focus:border-purple-400/50 transition-all"
+              placeholder="••••••••"
+              value={formData.password}
+              onChange={(e) =>
+                setFormData({ ...formData, password: e.target.value })
+              }
+              required
+            />
+            <button
+              type="button"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-700"
+              onClick={() => setShowNewPassword(!showNewPassword)}
+            >
+              {showNewPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
           </div>
+        </div>
 
-          {/* Submitting button matches the rest of the application styling system */}
+        {/* Confirm New Password */}
+        <div className="space-y-1.5">
+          <label className="text-xs tracking-widest uppercase text-zinc-600 font-bold ml-2">
+            Confirm New Password
+          </label>
+          <div className="relative">
+            <Lock
+              className="absolute left-4 top-1/2 -translate-y-1/2 text-zinc-600"
+              size={18}
+            />
+            <input
+              type={showConfirmPassword ? "text" : "password"}
+              className="w-full bg-white/5 border border-zinc-200 rounded-2xl py-4 pl-12 pr-12 text-zinc-800 focus:outline-none focus:border-purple-400/50 transition-all"
+              placeholder="••••••••"
+              value={formData.passwordConfirm}
+              onChange={(e) =>
+                setFormData({ ...formData, passwordConfirm: e.target.value })
+              }
+              required
+            />
+            <button
+              type="button"
+              className="absolute right-4 top-1/2 -translate-y-1/2 text-zinc-500 hover:text-zinc-700"
+              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+            >
+              {showConfirmPassword ? <EyeOff size={18} /> : <Eye size={18} />}
+            </button>
+          </div>
+        </div>
+
+        {/* Save Changes Button */}
+        <div className="pt-2">
           <button
             type="submit"
             disabled={isUpdating}
-            className="w-full h-16 bg-yellow-400 text-black font-black rounded-2xl border-4 border-black shadow-[4px_4px_0px_0px_rgba(0,0,0,1)] hover:translate-x-[1px] hover:translate-y-[1px] hover:shadow-[3px_3px_0px_0px_rgba(0,0,0,1)] active:translate-x-[4px] active:translate-y-[4px] active:shadow-none transition-all uppercase tracking-wide text-md mt-6 flex items-center justify-center disabled:opacity-50 disabled:pointer-events-none"
+            className="w-full py-4 rounded-2xl bg-purple-200 text-purple-600 shadow-sm font-semibold tracking-wider disabled:opacity-50 transition-opacity"
           >
-            {isUpdating ? "Locking..." : "Lock it in!"}
+            {isUpdating ? "Updating Password..." : "Save Changes"}
           </button>
-        </form>
-      </div>
-    </div>
-  );
-}
-
-function PasswordField({ label, placeholder, value, setValue }) {
-  const [visible, setVisible] = useState(false);
-
-  return (
-    <div className="flex flex-col gap-2">
-      <label className="text-xs font-black text-zinc-500 uppercase tracking-wider ml-1">
-        {label}
-      </label>
-      <div className="relative w-full">
-        <div className="absolute left-5 top-1/2 -translate-y-1/2 text-zinc-400 pointer-events-none">
-          <Lock size={20} strokeWidth={2.5} />
         </div>
-
-        <input
-          required
-          type={visible ? "text" : "password"}
-          placeholder={placeholder}
-          value={value}
-          onChange={(e) => setValue(e.target.value)}
-          className="w-full h-16 pl-14 pr-14 rounded-2xl bg-zinc-100 text-black font-semibold border-2 border-transparent focus:border-black focus:bg-white focus:outline-none transition-all text-lg placeholder:text-zinc-400 placeholder:font-normal"
-        />
-
-        <button
-          type="button"
-          onClick={() => setVisible(!visible)}
-          className="absolute right-5 top-1/2 -translate-y-1/2 p-1 text-zinc-400 hover:text-black transition-colors"
-          tabIndex={-1}
-        >
-          {visible ? <EyeOff size={20} /> : <Eye size={20} />}
-        </button>
-      </div>
+      </form>
     </div>
   );
 }
+
+export default ChangePassword;

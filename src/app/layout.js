@@ -27,13 +27,11 @@ export default function RootLayout({ children }) {
             toastOptions={{
               // Default styles for all toasts
               style: {
-                background: "#fff", // Clean white background
-                color: "#000", // Bold black text
-                borderRadius: "9999px", // Pill shape
-                // border: "3px solid #000", // The signature Smile thick border
+                background: "#fff",
+                color: "#000",
+                borderRadius: "9999px",
                 fontWeight: "700",
                 fontSize: "13px",
-                // textTransform: "uppercase",
                 letterSpacing: "0.05em",
                 padding: "12px 24px",
               },

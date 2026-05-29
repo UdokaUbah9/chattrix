@@ -14,7 +14,7 @@ export default function ChatLayout({ children }) {
           md:flex flex-col gap-4 p-5
         `}
       >
-        <p className="text-2xl font-bold text-zinc-900 uppercase leading-none select-none tracking-wide shrink-0">
+        <p className="text-2xl md:text-xl font-semibold text-zinc-800 uppercase leading-none select-none tracking-wide shrink-0">
           CHAT
         </p>
 

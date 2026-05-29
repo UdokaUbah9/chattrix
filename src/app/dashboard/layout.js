@@ -315,7 +315,7 @@ export default function DashboardGuard({ children }) {
       >
         {!isPageName && !isGamePath && !isPasswordPage && (
           <p
-            className={`text-2xl font-bold text-zinc-900 uppercase leading-none select-none ${!isGamePath && "p-5"} tracking-wide`}
+            className={`text-2xl md:text-xl font-semibold text-zinc-800 uppercase leading-none select-none ${!isGamePath && "p-5"} tracking-wide`}
           >
             {pageName}
           </p>
