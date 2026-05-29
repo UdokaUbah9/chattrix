@@ -74,7 +74,7 @@ export default function DiscoveryCard({ query }) {
                 return (
                   <div
                     key={peep._id}
-                    className="user-card flex items-center justify-between bg-yellow-100 px-2 py-1 rounded-2xl"
+                    className="user-card flex items-center justify-between bg-yellow-100 p-3 rounded-2xl"
                   >
                     <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div className="relative shrink-0">
