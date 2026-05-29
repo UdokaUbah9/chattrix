@@ -113,7 +113,7 @@ export default function DiscoveryCard({ query }) {
                           `/dashboard/chat/${peep._id}?name=${peep.username}`,
                         )
                       }
-                      className="ml-2 bg-purple-200 px-2 py-1 rounded-xl text-sm font-bold flex items-center gap-1"
+                      className="ml-2 bg-purple-200 px-2 py-1 rounded-xl text-sm font-bold flex items-center gap-1 text-zinc-800"
                     >
                       Chat
                       <MessageSquare size={14} strokeWidth={1} fill="black" />

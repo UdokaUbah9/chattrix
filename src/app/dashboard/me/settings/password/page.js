@@ -101,7 +101,7 @@ export default function ChangePassword() {
         </button>
 
         <header className="animate-item mb-8 text-center">
-          <h1 className="text-2xl text-zinc-800 uppercase italic tracking-tighter leading-none font-semibold">
+          <h1 className="text-2xl md:text-4xl text-zinc-800 uppercase italic tracking-tighter leading-none font-semibold">
             New <span className="text-zinc-800 block">Password?</span>
           </h1>
         </header>
