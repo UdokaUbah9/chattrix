@@ -54,7 +54,7 @@ function SearchInput({ query, setQuery }) {
           onFocus={() => setIsFocused(true)}
           onBlur={() => !query && setIsFocused(false)}
           placeholder={`${isFocused ? "Search peeps..." : ""}`}
-          className="w-full h-full bg-yellow-50 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-zinc-800 placeholder:text-zinc-500 outline-none transition-all shadow-lg px-2 py-1"
+          className="w-full h-full bg-yellow-50 backdrop-blur-md border border-white/20 rounded-2xl p-4 text-zinc-800 placeholder:text-zinc-500 placeholder:text-xs md:placeholder:text-sm outline-none transition-all shadow-lg px-2 py-1 text-base"
         />
 
         {/* 3. THE X BUTTON */}
