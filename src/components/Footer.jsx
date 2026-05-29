@@ -44,7 +44,7 @@ export default function AppFooter() {
                 }`}
               >
                 <Icon
-                  size={24}
+                  size={18}
                   strokeWidth={isActive ? 2.5 : 2}
                   className={`transition-colors duration-300 ${
                     isActive

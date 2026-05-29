@@ -288,29 +288,28 @@ export default function FriendList() {
                     >
                       {/* AVATAR */}
                       <div className="relative shrink-0 ">
-                        <div className="relative size-14 rounded-full overflow-hidden bg-purple-100">
+                        <div className="relative md:size-9 size-14 rounded-full overflow-hidden bg-purple-100">
                           <Image
                             src={currentUser.avatar || "/default-dp.png"}
                             fill
-                            sizes="56px"
-                            className="object-cover"
+                            className="object-contain"
                             alt={currentUser.username}
                             priority
                           />
                         </div>
                         <span
-                          className={`absolute bottom-0 right-0 size-4 rounded-full border-2 border-white ${
+                          className={`absolute bottom-0 right-0 size-3 rounded-full border-2 border-white ${
                             isOnline
-                              ? "bg-green-700 animate-pulse shadow-[0_0_8px_#22c55e]"
+                              ? "bg-green-700 animate-pulse"
                               : "bg-zinc-300"
                           }`}
                         />
                       </div>
 
                       {/* CONTENT */}
-                      <div className="flex-1 border-b border-purple-200 p-3 min-w-0">
+                      <div className="flex-1 border-b border-purple-200 px-2 py-1 min-w-0">
                         <div className="flex justify-between items-baseline">
-                          <p className="font-black text-zinc-900 truncate">
+                          <p className="text-zinc-900 truncate">
                             {currentUser.username}
                           </p>
 
@@ -329,7 +328,7 @@ export default function FriendList() {
                               !conversationMessage?.isDeleted && (
                                 <div className="text-green-600 animate-pulse flex items-center justify-center flex-col">
                                   {/* Unread Mail Icon */}
-                                  <Mail size={18} strokeWidth={2.5} />
+                                  <Mail size={12} strokeWidth={2.5} />
 
                                   {/* Dynamic Smart Timestamp */}
                                   <div className="text-xs text-zinc-400 font-bold mt-0.5 select-none">
@@ -344,7 +343,7 @@ export default function FriendList() {
                           </div>
                         </div>
 
-                        <div className="text-sm text-zinc-700 font-medium truncate">
+                        <div className="md:text-xs text-sm text-zinc-700 font-medium truncate">
                           {typingUserId &&
                           String(currentUser._id) === String(typingUserId) ? (
                             <span className="text-purple-600 italic">

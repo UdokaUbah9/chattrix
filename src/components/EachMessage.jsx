@@ -426,7 +426,7 @@ export default function EachMessage() {
                           onMouseLeave={handleHoldEnd}
                           onTouchStart={() => handleHoldStart(msg._id)}
                           onTouchEnd={handleHoldEnd}
-                          className={`message-bubble relative p-3.5 max-w-[80%] text-[16px] shadow-sm mb-1 font-medium transition-colors wrap-break-word
+                          className={`message-bubble relative px-2 py-1 max-w-[80%] md:text-xs text-sm shadow-sm mb-1 font-medium transition-colors wrap-break-word
                             ${
                               msg.senderId !== userId
                                 ? "bg-purple-200 text-slate-900 ml-auto rounded-2xl rounded-br-none"
@@ -468,15 +468,15 @@ export default function EachMessage() {
                                     <span className="text-xs italic">...</span>
                                   )}
                                   {msg.status === "sent" && (
-                                    <Check size={16} strokeWidth={1.5} />
+                                    <Check size={14} strokeWidth={2} />
                                   )}
                                   {msg.status === "delivered" && (
-                                    <CheckCheck size={16} strokeWidth={1.5} />
+                                    <CheckCheck size={14} strokeWidth={2} />
                                   )}
                                   {msg.status === "read" && (
                                     <CheckCheck
-                                      size={16}
-                                      strokeWidth={3.5}
+                                      size={14}
+                                      strokeWidth={2}
                                       className="text-yellow-500"
                                     />
                                   )}
@@ -517,7 +517,7 @@ export default function EachMessage() {
             <div className="h-12 ml-2 mt-2 shrink-0">
               {isTyping && (
                 <div className="flex items-end gap-1 animate-in fade-in slide-in-from-bottom-2 text-left">
-                  <p className="animate-bounce text-xl">轴</p>
+                  <p className="animate-bounce text-xl">🤳🏼</p>
                   <div className="relative">
                     <div className="absolute -bottom-2 -left-1 w-2 h-2 bg-white rounded-full shadow-sm" />
                     <div className="absolute -bottom-1 left-1 w-3 h-3 bg-white rounded-full shadow-sm" />

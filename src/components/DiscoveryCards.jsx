@@ -74,12 +74,12 @@ export default function DiscoveryCard({ query }) {
                 return (
                   <div
                     key={peep._id}
-                    className="user-card flex items-center justify-between bg-white p-3 rounded-2xl"
+                    className="user-card flex items-center justify-between bg-white px-2 py-1 rounded-2xl"
                   >
-                    <div className="flex items-center gap-4 flex-1 min-w-0">
+                    <div className="flex items-center gap-3 flex-1 min-w-0">
                       <div className="relative shrink-0">
                         {/* 1. IMAGE CONTAINER */}
-                        <div className="relative size-14 rounded-full overflow-hidden bg-purple-100">
+                        <div className="relative md:size-9  size-14 rounded-full overflow-hidden bg-purple-100">
                           <Image
                             src={peep.avatar || "/default-dp.png"}
                             className="object-cover"
@@ -97,11 +97,11 @@ export default function DiscoveryCard({ query }) {
 
                       {/* User Details */}
                       <div className="flex flex-col min-w-0">
-                        <h3 className="text-zinc-900 font-semibold text-lg leading-none truncate">
+                        <h3 className="text-zinc-800 font-semibold text-sm leading-none truncate">
                           {peep.username}
                         </h3>
                         <p className="text-xs tracking-wide font-light text-zinc-700 truncate mt-1">
-                          {peep.email || "hello@smile.com"}
+                          {peep.email}
                         </p>
                       </div>
                     </div>
@@ -113,10 +113,10 @@ export default function DiscoveryCard({ query }) {
                           `/dashboard/chat/${peep._id}?name=${peep.username}`,
                         )
                       }
-                      className="ml-2 bg-purple-200 px-4 py-2 rounded-xl text-sm font-bold flex items-center gap-2"
+                      className="ml-2 bg-purple-200 px-2 py-1 rounded-xl text-sm font-bold flex items-center gap-1"
                     >
                       Chat
-                      <MessageSquare size={16} strokeWidth={1} fill="black" />
+                      <MessageSquare size={14} strokeWidth={1} fill="black" />
                     </button>
                   </div>
                 );
