@@ -140,7 +140,7 @@ export default function Verify() {
 
   return (
     <div
-      className="flex items-center flex-col gap-17 w-full bg-yellow-50 min-h-screen"
+      className="flex items-center flex-col gap-17 w-full bg-yellow-50 min-h-screen p-4"
       ref={signupContainerRef}
     >
       <RedirectLoginButton />
@@ -215,7 +215,7 @@ export default function Verify() {
           />
         </div>
         <button
-          className="bg-yellow-300 w-full max-w-[370px] h-14 cursor-pointer mt-10 p-2 rounded-lg font-bold focus:outline-none 
+          className="bg-yellow-300 text-zinc-800 w-full max-w-[280px] h-14 cursor-pointer mt-10 p-2 rounded-lg font-bold focus:outline-none 
     focus:ring-3
     focus:ring-yellow-400 
     focus:ring-offset-2"
