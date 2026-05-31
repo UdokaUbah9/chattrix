@@ -17,13 +17,15 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
 
   const dispatch = useDispatch();
 
-  const stealSound = useRef(null);
-  const whistleDown = useRef(null);
+  const stealSoundRef = useRef(null);
+  const whistleDownRef = useRef(null);
+  const diceAudioRef = useRef(null);
 
   // Initialize sounds safely on client-side mount
   useEffect(() => {
-    stealSound.current = new Audio("/sounds/points-stolen.mp3");
-    whistleDown.current = new Audio("/sounds/whistle-down.mp3");
+    stealSoundRef.current = new Audio("/sounds/points-stolen.mp3");
+    whistleDownRef.current = new Audio("/sounds/whistle-down.mp3");
+    diceAudioRef.current = new Audio("/sounds/dice-rolled.mp3");
   }, []);
 
   // Main game state update listener
@@ -49,15 +51,20 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
 
       setIsRolling(true);
 
+      if (isRolling) {
+        diceAudioRef.current.currentTime = 0;
+        diceAudioRef.play().catch(() => {});
+      }
+
       setTimeout(() => {
         setDiceValue(result);
         setIsRolling(false);
         dispatch(setSession(serverSession));
 
-        if (result === 6 && serverSession?.stealHappened) {
-          if (stealSound.current) {
-            stealSound.current.currentTime = 0;
-            stealSound.current.play().catch(() => {});
+        if (result === 6 && serverSession?.stealHappenned) {
+          if (stealSoundRef.current) {
+            stealSoundRef.current.currentTime = 0;
+            stealSoundRef.current.play().catch(() => {});
           }
           if (navigator.vibrate) navigator.vibrate([50, 30, 50]);
 
@@ -65,9 +72,9 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
           setTimeout(() => setShowSteal(false), 800);
         }
 
-        if (turnSwapped && whistleDown.current) {
-          whistleDown.current.currentTime = 0;
-          whistleDown.current.play().catch(() => {});
+        if (turnSwapped && whistleDownRef.current) {
+          whistleDownRef.current.currentTime = 0;
+          whistleDownRef.current.play().catch(() => {});
         }
       }, 400);
     };
@@ -90,8 +97,8 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
     if (isRolling || !isMyTurn || !session?.player1 || !session?.player2)
       return;
 
-    const diceAudio = new Audio("/sounds/dice-rolled.mp3");
-    diceAudio.play().catch(() => {});
+    // const diceAudio = new Audio("/sounds/dice-rolled.mp3");
+    // diceAudio.play().catch(() => {});
 
     socket.emit("roll-dice", roomId);
   };
