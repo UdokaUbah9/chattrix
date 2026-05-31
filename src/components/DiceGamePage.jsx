@@ -81,7 +81,7 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
 
     socket.on("dice-result", handleDiceResult);
     return () => socket.off("dice-result", handleDiceResult);
-  }, [dispatch, setShowSteal]);
+  }, [dispatch, setShowSteal, isRolling]);
 
   // CRITICAL FIX: Moved game-over out of the click handler to avoid duplicate listener leaks
   useEffect(() => {
