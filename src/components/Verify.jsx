@@ -152,7 +152,7 @@ export default function Verify() {
       </p>
 
       <form
-        className="flex justify-center items-center flex-col"
+        className="flex justify-center items-center flex-col text-zinc-800"
         onSubmit={handleSubmitOtp}
       >
         <div className="flex sm:gap-10 justify-between items-center gap-5">
