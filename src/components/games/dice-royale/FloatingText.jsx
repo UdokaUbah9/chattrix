@@ -42,6 +42,11 @@ export function FloatingText({ trigger, targetPlayer, isMyTurn }) {
 
   const isPositive = text.includes("+");
 
+  console.log("FloatingText Debug:", {
+    trigger,
+    stealHappenned: session?.stealHappenned,
+    targetPlayer,
+  });
   if (!trigger || !session?.stealHappenned) return null;
 
   return (

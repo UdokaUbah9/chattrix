@@ -31,8 +31,6 @@ function Versus({ showSteal, isMyTurn }) {
             alt={`profile picture`}
             className="rounded-full object-cover"
           />
-          {/* Optional: Online Status Indicator */}
-          <span className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white rounded-full"></span>
         </div>
         <div className="relative">
           <FloatingText
@@ -69,8 +67,6 @@ function Versus({ showSteal, isMyTurn }) {
             alt={`profile picture`}
             className="rounded-full object-cover"
           />
-          {/* Optional: Online Status Indicator */}
-          <span className="absolute bottom-0 right-0 size-3 bg-green-500 border-2 border-white rounded-full"></span>
         </div>
         <div className="relative">
           <FloatingText
