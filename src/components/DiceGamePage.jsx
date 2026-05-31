@@ -51,9 +51,9 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
 
       setIsRolling(true);
 
-      if (isRolling) {
+      if (diceAudioRef.current) {
         diceAudioRef.current.currentTime = 0;
-        diceAudioRef.play().catch(() => {});
+        diceAudioRef.current.play().catch(() => {});
       }
 
       setTimeout(() => {
