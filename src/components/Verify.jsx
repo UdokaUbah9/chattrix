@@ -74,8 +74,8 @@ export default function Verify() {
 
       // 2. Select the correct endpoint based on the flow
       const endpoint = forgottenPasswordEmail
-        ? `https://chattrix-backend-0dhy.onrender.com/api/smile/v1/users/verify-reset-otp`
-        : `https://chattrix-backend-0dhy.onrender.com/api/smile/v1/users/signup`;
+        ? `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/verify-reset-otp`
+        : `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/signup`;
 
       const res = await fetch(endpoint, {
         method: "POST",
@@ -161,7 +161,7 @@ export default function Verify() {
             inputMode="Numeric"
             pattern="\d*"
             // maxLength={1}
-            className="bg-smoke w-12 h-12 text-center font-semibold text-3xl p-2 focus:outline-none
+            className="bg-smoke w-12 h-12 text-center font-semibold text-3xl p-2 focus:outline-none text-zinc-800
     focus:ring-3
     focus:ring-bright-yellow
     focus:ring-offset-3"
