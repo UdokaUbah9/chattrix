@@ -62,7 +62,7 @@ export default function Smile({ isFocused, loader, type }) {
     <div className="flex items-center justify-center backdrop-blur-2xl">
       <div className="mt-2">
         <Image
-          src="/chattrixlogo1.png"
+          src="/chattrixLogo1.png"
           width={200}
           height={50}
           priority

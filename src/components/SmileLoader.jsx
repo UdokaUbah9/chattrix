@@ -26,7 +26,7 @@ const SmileLoader = () => {
         {/* The Icon Container */}
         <div className="animate-squish">
           <Image
-            src="/chattrixclap.png"
+            src="/chattrixClap.png"
             width={200}
             height={50}
             priority
