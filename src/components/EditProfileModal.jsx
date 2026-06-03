@@ -140,7 +140,7 @@ function EditProfileModal({ onClose, getMyProfile }) {
                 />
                 <input
                   type="text"
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-zinc-800 focus:outline-none focus:border-smile-primary/50 transition-all"
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-zinc-800 focus:outline-none focus:border-smile-primary/50 transition-all text-xs md:text-sm"
                   placeholder="Enter username"
                   onChange={(e) =>
                     setFormData((data) => ({
@@ -166,7 +166,7 @@ function EditProfileModal({ onClose, getMyProfile }) {
                   type="email"
                   value={user?.email || "user@example.com"}
                   readOnly
-                  className="w-full bg-zinc-700/50 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-zinc-900 cursor-not-allowed"
+                  className="w-full bg-zinc-700/50 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-zinc-900 cursor-not-allowed text-xs md:text-sm"
                 />
               </div>
             </div>
