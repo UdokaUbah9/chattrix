@@ -176,7 +176,7 @@ function EditProfileModal({ onClose, getMyProfile }) {
           <div className="flex gap-4 pt-2">
             <button
               type="button"
-              className="flex-1 py-4 rounded-2xl text-red-600 shadow-sm tracking-wider"
+              className="flex-1 py-2 rounded-2xl text-red-600 shadow-sm tracking-wider text-xs md:text-sm"
               onClick={onClose}
             >
               Cancel
@@ -184,7 +184,7 @@ function EditProfileModal({ onClose, getMyProfile }) {
             <button
               type="submit"
               disabled={isEditing}
-              className="flex-1 py-4 rounded-2xl bg-purple-200 text-purple-600 shadow-sm tracking-wider"
+              className="flex-1 py-2 rounded-2xl bg-purple-200 text-purple-600 shadow-sm tracking-wider text-xs md:text-sm"
               onClick={onSaveClick}
             >
               {isEditing ? "Uploading..." : "Save Changes"}
