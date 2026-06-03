@@ -187,7 +187,7 @@ function EditProfileModal({ onClose, getMyProfile }) {
               className="flex-1 py-4 rounded-2xl bg-purple-200 text-purple-600 shadow-sm tracking-wider"
               onClick={onSaveClick}
             >
-              {isEditing ? "Uploading to Smile..." : "Save Changes"}
+              {isEditing ? "Uploading..." : "Save Changes"}
             </button>
           </div>
         </form>
