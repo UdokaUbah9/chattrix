@@ -55,8 +55,8 @@ export default function SignUpForm({ setIsFocused }) {
     const val = e.target.value;
     setUsername(val);
 
-    if (val.length > 0 && val.length < 8) {
-      setUsernameError("Password must be at least 8 characters");
+    if (val.length > 0 && val.length < 3) {
+      setUsernameError("Password must be at least 3 characters");
     } else {
       setUsernameError("");
     }
@@ -79,8 +79,6 @@ export default function SignUpForm({ setIsFocused }) {
       const data = { email, username, password };
 
       dispatch(setPendingSignUp(data));
-
-      console.log(process.env.NEXT_PUBLIC_API_URL);
 
       // CREATING A TIMEOUT FOR THE FETCH REQUEST
       const controller = new AbortController();
@@ -172,7 +170,7 @@ export default function SignUpForm({ setIsFocused }) {
             placeholder="Enter Username"
             value={username}
             onChange={handleUsernameChange}
-            minLength={8}
+            minLength={3}
           />
           {usernameError && (
             <p className="text-red-500 text-xs mt-1 animate-pulse">

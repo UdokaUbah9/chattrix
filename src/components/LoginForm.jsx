@@ -60,8 +60,8 @@ export default function LoginForm({ setIsFocused }) {
     const val = e.target.value;
     setUsername(val);
 
-    if (val.length > 0 && val.length < 8) {
-      setUsernameError("Username must be at least 8 characters");
+    if (val.length > 0 && val.length < 3) {
+      setUsernameError("Username must be at least 3 characters");
     } else {
       setUsernameError("");
     }
