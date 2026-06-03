@@ -72,6 +72,8 @@ export default function Verify() {
     try {
       setIsLoading(true);
 
+      console.log(process.env.NEXT_PUBLIC_API_URL);
+
       // 2. Select the correct endpoint based on the flow
       const endpoint = forgottenPasswordEmail
         ? `${process.env.NEXT_PUBLIC_API_URL}/api/smile/v1/users/verify-reset-otp`

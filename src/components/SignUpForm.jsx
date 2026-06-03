@@ -80,6 +80,8 @@ export default function SignUpForm({ setIsFocused }) {
 
       dispatch(setPendingSignUp(data));
 
+      console.log(process.env.NEXT_PUBLIC_API_URL);
+
       // CREATING A TIMEOUT FOR THE FETCH REQUEST
       const controller = new AbortController();
       const timeoutId = setTimeout(() => controller.abort(), 10000);
