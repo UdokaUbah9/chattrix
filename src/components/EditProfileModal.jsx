@@ -140,7 +140,7 @@ function EditProfileModal({ onClose, getMyProfile }) {
                 />
                 <input
                   type="text"
-                  className="w-full bg-white/5 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-zinc-800 focus:outline-none focus:border-smile-primary/50 transition-all text-xs md:text-sm"
+                  className="w-full bg-white/5 border border-white/5 rounded-2xl py-4 pl-12 pr-4 text-zinc-800 focus:outline-none focus:border-smile-primary/50 transition-all text-base"
                   placeholder="Enter username"
                   onChange={(e) =>
                     setFormData((data) => ({
