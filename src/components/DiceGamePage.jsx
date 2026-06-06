@@ -14,8 +14,11 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
   const [isRolling, setIsRolling] = useState(false);
   const { roomId, session } = useSelector((store) => store.auth);
   const [diceValue, setDiceValue] = useState(1);
+  const [isLocked, setIsLocked] = useState(false);
 
   const dispatch = useDispatch();
+
+  // const isCooldownRef = useRef(false);
 
   const stealSoundRef = useRef(null);
   const whistleDownRef = useRef(null);
@@ -47,9 +50,12 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
   // Dice roll outcome listener
   useEffect(() => {
     const handleDiceResult = (data) => {
+      if (isCooldownRef.current) return;
+
       const { result, turnSwapped, session: serverSession } = data;
 
       setIsRolling(true);
+      setIsLocked(true);
 
       if (diceAudioRef.current) {
         diceAudioRef.current.currentTime = 0;
@@ -76,6 +82,10 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
           whistleDownRef.current.currentTime = 0;
           whistleDownRef.current.play().catch(() => {});
         }
+
+        setTimeout(() => {
+          setIsLocked(false);
+        }, 1500);
       }, 400);
     };
 
@@ -83,7 +93,6 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
     return () => socket.off("dice-result", handleDiceResult);
   }, [dispatch, setShowSteal]);
 
-  // CRITICAL FIX: Moved game-over out of the click handler to avoid duplicate listener leaks
   useEffect(() => {
     const handleGameOver = ({ winner }) => {
       dispatch(setWinner(winner));
@@ -96,9 +105,6 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
   const handleRoll = () => {
     if (isRolling || !isMyTurn || !session?.player1 || !session?.player2)
       return;
-
-    // const diceAudio = new Audio("/sounds/dice-rolled.mp3");
-    // diceAudio.play().catch(() => {});
 
     socket.emit("roll-dice", roomId);
   };
@@ -147,7 +153,7 @@ export default function DiceGamePage({ setShowSteal, isMyTurn }) {
               onRoll={handleRoll}
               onHold={handleHold}
               isRolling={isRolling}
-              disabled={isRolling || !isMyTurn}
+              disabled={isRolling || !isMyTurn || isLocked}
             />
           )}
         </div>
