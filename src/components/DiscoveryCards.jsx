@@ -100,9 +100,9 @@ export default function DiscoveryCard({ query }) {
                         <h3 className="text-zinc-800 font-semibold text-sm leading-none truncate">
                           {peep.username}
                         </h3>
-                        <p className="text-xs tracking-wide font-light text-zinc-700 truncate mt-1">
+                        {/* <p className="text-xs tracking-wide font-light text-zinc-700 truncate mt-1">
                           {peep.email}
-                        </p>
+                        </p> */}
                       </div>
                     </div>
 
