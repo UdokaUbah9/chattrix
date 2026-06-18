@@ -292,7 +292,7 @@ export default function FriendList() {
                           <Image
                             src={currentUser.avatar || "/default-dp.png"}
                             fill
-                            className="object-contain"
+                            className="object-cover"
                             alt={currentUser.username}
                             priority
                           />
